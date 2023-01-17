@@ -6,20 +6,33 @@ on:
   pull_request:
     branches: none # [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   call-workflow-A:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main
+    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main 
     with:
       username: CloudwithNicholas
     secrets:
       token: ${{ secrets.TOKEN }}
 
-  call-workflow-B:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main
+  # call-workflow-B:
+  #   uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@main 
+  #   with:
+  #     username: CloudwithNicholas
+  #   secrets:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     TF_ACTION_WORKING_DIR: 'terraform'
+  
+  callingrepo:
+    uses: actions/github-script@v6
     with:
-      username: CloudwithNicholas
-    secrets:
-      token: ${{ secrets.TOKEN }}
+      github-token: ${{ secrets.GHA_WORKFLOW_TRIGGER }}
+      script: |
+        const result = await github.rest.actions.createWorkflowDispatch({
+          owner: 'CloudwithNicholas',
+          repo: 'backend-repo',
+          workflow_id: 'github_linter',
+          ref: 'main/branch'
+        })
+        console.log(result)
