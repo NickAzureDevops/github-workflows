@@ -24,14 +24,14 @@ jobs:
   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #     TF_ACTION_WORKING_DIR: 'terraform'
   
-  uses: actions/github-script@v6
-  with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
-    script: |
-      const result = await github.rest.actions.createWorkflowDispatch({
-        owner: 'CloudwithNicholas',
-        repo: 'backend-repo',
-        workflow_id: 'github_linter',
-        ref: 'main/branch'
-      })
-      console.log(result)
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const result = await github.rest.actions.createWorkflowDispatch({
+            owner: 'CloudwithNicholas',
+            repo: 'backend-repo',
+            workflow_id: 'github_linter',
+            ref: 'main/branch'
+          })
+          console.log(result)
