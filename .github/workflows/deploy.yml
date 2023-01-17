@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-name: 080-resusable-workflow-caller
-=======
 name: deploy
->>>>>>> main
 
 on:
   push:
