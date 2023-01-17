@@ -1,4 +1,4 @@
-name: 080-resusable-workflow-caller
+name: deploy
 
 on:
   push:
