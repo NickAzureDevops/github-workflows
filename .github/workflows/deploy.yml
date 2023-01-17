@@ -11,9 +11,9 @@ on:
 
 jobs:
   call-workflow-A:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main
+    uses: HoussemDellai/github-actions-course/.github/workflows/080-reusable-workflow-called.yml@main
     with:
-      username: CloudwithNicholas
+      username: Houssem
     secrets:
       token: ${{ secrets.TOKEN }}
 
