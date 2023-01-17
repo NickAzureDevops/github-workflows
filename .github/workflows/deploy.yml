@@ -11,14 +11,14 @@ on:
 
 jobs:
   call-workflow-A:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main
+    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main 
     with:
       username: CloudwithNicholas
     secrets:
       token: ${{ secrets.TOKEN }}
 
   call-workflow-B:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main
+    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main 
     with:
       username: CloudwithNicholas
     secrets:
