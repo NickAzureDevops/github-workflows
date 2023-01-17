@@ -1,8 +1,14 @@
 name: terraform_plan
+
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
 
 jobs:
   terraform_plan:

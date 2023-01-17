@@ -1,4 +1,4 @@
-name: 080-resusable-workflow-called
+name: github_linter
 
 on:
   workflow_call:
