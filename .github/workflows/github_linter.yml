@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  example_job:
+  githu_lint:
     runs-on: ubuntu-latest
     steps:
       - name: Run a hello world script
