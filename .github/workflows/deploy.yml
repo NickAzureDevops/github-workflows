@@ -5,16 +5,15 @@ env:
   tf_version: latest
   tf_key: terraform-dev
   tf_vars_file: terraform.tfvars
-  tf_environment: Dev
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TFBucketName: tfstate-nick
 
 jobs:
   Plan_Dev:
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
-      tf_version: ${{ vars.tf_version }}                 
+      tf_version: ${{ vars.tf_version }}    
+      tfbucketname : ${{ vars.TFBucketName }}             
       tf_key: ${{ vars.tf_key }}          
       tf_vars_file: ${{ vars.tf_vars_file }}
     secrets:
