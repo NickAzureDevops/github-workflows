@@ -16,13 +16,6 @@ jobs:
     secrets:
       token: ${{ secrets.TOKEN }}
 
-  # call-workflow-B:
-  #   uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@main 
-  #   with:
-  #     username: CloudwithNicholas
-  #   secrets:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     TF_ACTION_WORKING_DIR: 'terraform'
   trigger-repo:
     runs-on: ubuntu-latest
     steps:
