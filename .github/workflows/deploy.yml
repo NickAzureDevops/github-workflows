@@ -1,19 +1,16 @@
 name: "deploy"
 on:
   workflow_dispatch:
-env:
-  tf_vars_file: terraform.tfvars
-  TFBucketName: tfstate-nick
-
+    
 jobs:
   Plan_Dev:
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest
-      tfbucketname : ${{ vars.TFBucketName }}             
+      tfbucketname : tfstate-nick       
       tf_key: terraform-dev          
-      tf_vars_file: ${{ vars.tf_vars_file }}
+      tf_vars_file: terraform.tfvars
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
