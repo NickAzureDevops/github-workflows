@@ -12,7 +12,7 @@ jobs:
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
-      tf_version: ${{ vars.tf_version }}    
+      tf_version: latest
       tfbucketname : ${{ vars.TFBucketName }}             
       tf_key: ${{ vars.tf_key }}          
       tf_vars_file: ${{ vars.tf_vars_file }}
