@@ -1,60 +1,71 @@
-# name: terraform_apply
+name: terraform_apply
 
-# on:
-#   workflow_call:
-#     inputs:
-#      path:
-#       description: 'Specifies the path of the root terraform module.'
-#       required: true
-#       type: string
-#     tf_version:
-#       description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
-#       required: false
-#       type: string
-#       default: latest
-#     tf_environment:
-#       description: 'Specifies the GitHub deployment environment.'
-#       required: false
-#       type: string
-#       default: null
-#     tf_vars_file:
-#       description: 'Specifies the Terraform TFVARS file.'
-#       required: true
-#       type: string
-#     secrets:
-#       AWS_ACCESS_KEY_ID:
-#         description: '"AWS Access Key ID.'
-#         required: true
-#       AWS_SECRET_ACCESS_KEY:
-#         description: 'AWS Secret Access Key.'
-#         required: true
+on:
+  workflow_call:
+    inputs:
+     path:
+      description: 'Specifies the path of the root terraform module.'
+      required: true
+      type: string
+    tf_version:
+      description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
+      required: false
+      type: string
+      default: latest
+    tf_environment:
+      description: 'Specifies the GitHub deployment environment.'
+      required: false
+      type: string
+      default: null
+    tf_key:
+      description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
+      required: true
+      type: string
+    tf_vars_file:
+      description: 'Specifies the Terraform tfvars file.'
+      required: true
+      type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        description: '"AWS Access Key ID.'
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS Secret Access Key.'
+        required: true
         
-# jobs:
-#    tf_apply:
-#     runs-on: ubuntu-latest
-#     environment: ${{ inputs.tf_environment }}
-#     defaults:
-#       run:
-#         shell: bash
-#         working-directory: ./terraform
-#    env:
-#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#       tfbucketstate: tfstate-nick
+jobs:
+  build-plan:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.tf_environment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.path }}
+    env:
+      tfbucketname: ${{ inputs.tfbucketname }}
+      TF_KEY: ${{ inputs.tf_key }}.tfstate
+      TF_VARS: ${{ inputs.tf_vars_file }}
+      ###AZURE Client details###
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
 
-#    steps:
-#      - name: Checkout the repository to the runner
-#        uses: actions/checkout@v2
- 
-#      - name: Setup Terraform with specified version on the runner
-#        uses: hashicorp/setup-terraform@v2
-#        with:
-#          terraform_version: 1.3.0
-    
-#      - name: Terraform init
-#        id: init
-#        run: terraform init -backend-config="bucket=${{ env.tfbucketstate }}"
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: ${{ inputs.tf_version }}
 
-#      - name: Terraform apply
-#        id: apply
-#        run: terraform apply -auto-approve -input=false
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=${{ env.tfbucketstate }}"
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        continue-on-error: true
+
+      - name: Terraform Apply
+        run: terraform apply plan.tfplan
