@@ -8,7 +8,7 @@ on:
       required: true
       type: string
     tf_version:
-      description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
+      description: 'Specifies version of Terraform to use. Default=latest.'
       required: false
       type: string
       default: latest
@@ -45,7 +45,6 @@ jobs:
       tfbucketname: ${{ inputs.tfbucketname }}
       TF_KEY: ${{ inputs.tf_key }}.tfstate
       TF_VARS: ${{ inputs.tf_vars_file }}
-      ###AZURE Client details###
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   
