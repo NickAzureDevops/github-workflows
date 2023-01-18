@@ -32,22 +32,17 @@ jobs:
   #           })
   #           console.log(result)
       
-  dispatch:
+  deploy-infra:
     runs-on: ubuntu-latest
     steps:
-    # - run: |
-    #     curl -u "${{ secrets.PAT_USERNAME}}:${{secrets.PAT_TOKEN}}" \
-    #       -H "Accept: application/vnd.github.everest-preview+json" \
-    #       -H "Content-Type: application/json" \
-    #       https://api.github.com/repos/docker-sstc/docker-notify/actions/workflows/main.yml/dispatches \
-    #       --data '{"ref": "master"}'
     - uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.TOKEN }}
         script: |
-          await github.rest.actions.createWorkflowDispatch({
+          const result = await github.rest.actions.createWorkflowDispatch({
             owner: 'CloudwithNicholas',
             repo: 'backend-repo',
             workflow_id: 'deploy.yml',
             ref: 'main'
           })
+          console.log(result)
