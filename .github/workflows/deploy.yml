@@ -11,7 +11,7 @@ env:
 
 jobs:
   Plan_Dev:
-    uses: template name here 
+    uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: ${{ vars.tf_version }}                 
