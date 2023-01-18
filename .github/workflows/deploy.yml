@@ -31,7 +31,7 @@ jobs:
           const result = await github.rest.actions.createWorkflowDispatch({
             owner: 'CloudwithNicholas',
             repo: 'backend-repo',
-            workflow_id: 'deploy',
+            workflow_id: 'deploy.yml',
             ref: 'main/branch'
           })
           console.log(result)
