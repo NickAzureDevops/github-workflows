@@ -20,16 +20,14 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
-  # Deploy_Dev:
-  #   needs: Plan_Dev
-  #   uses: Pwd9000-ML/Azure-Terraform-Deployments/.github/workflows/az_tf_apply.yml@master
+  # DeployDev:
+  #   uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
   #   with:
-  #     path: 01_Foundation               
-  #     tf_version: latest                
-  #     tf_key: foundation-dev             
-  #     gh_environment: Development       
+  #     path: terraform             
+  #     tf_version: ${{ vars.tf_version }}    
+  #     tfbucketname : ${{ vars.TFBucketName }}             
+  #     tf_key: ${{ vars.tf_key }}          
+  #     tf_vars_file: ${{ vars.tf_vars_file }}
   #   secrets:
-  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             
-  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## ARM Client Secret
-  #     arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## ARM Subscription ID
-  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## ARM Tenant ID
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
