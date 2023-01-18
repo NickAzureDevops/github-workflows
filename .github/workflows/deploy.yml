@@ -9,7 +9,7 @@ env:
 
 jobs:
   Plan_Dev:
-    uses: Pwd9000-ML/Azure-Terraform-Deployments/.github/workflows/az_tf_plan.yml@master
+    uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest
