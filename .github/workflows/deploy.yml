@@ -16,7 +16,7 @@ jobs:
     secrets:
       token: ${{ secrets.TOKEN }}
 
-  trigger-repo:
+  deploy-infra:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
