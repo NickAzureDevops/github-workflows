@@ -1,48 +1,37 @@
-name: deploy
-
+name: "deploy"
 on:
-  push:
-    branches: none # [ main ]
-  pull_request:
-    branches: none # [ main ]
-
   workflow_dispatch:
+env:
+  tf_version: latest
+  tf_key: terraform-dev
+  tf_vars_file: terraform.tfvars
+  tf_environment: Dev
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  call-workflow-A:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main 
+  Plan_Dev:
+    uses: template name here 
     with:
-      username: CloudwithNicholas
+      path: terraform             
+      tf_version: ${{ vars.tf_version }}                 
+      tf_key: ${{ vars.tf_key }}          
+      tf_vars_file: ${{ vars.tf_vars_file }}
     secrets:
-      token: ${{ secrets.TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+      arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} 
 
-  # deploy-infra:
-  #   dispatch:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/github-script@v6
-  #       with:
-  #         github-token: ${{ secrets.TOKEN }}
-  #         script: |
-  #           const result = await github.rest.actions.createWorkflowDispatch({
-  #             owner: 'CloudwithNicholas',
-  #             repo: 'backend-repo',
-  #             workflow_id: 'deploy.yml',
-  #             ref: 'heads/main'
-  #           })
-  #           console.log(result)
-      
-  deploy-infra:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.TOKEN }}
-        script: |
-          const result = await github.rest.actions.createWorkflowDispatch({
-            owner: 'CloudwithNicholas',
-            repo: 'backend-repo',
-            workflow_id: 'deploy.yml',
-            ref: 'main'
-          })
-          console.log(result)
+  # Deploy_Dev:
+  #   needs: Plan_Dev
+  #   uses: Pwd9000-ML/Azure-Terraform-Deployments/.github/workflows/az_tf_apply.yml@master
+  #   with:
+  #     path: 01_Foundation               
+  #     tf_version: latest                
+  #     tf_key: foundation-dev             
+  #     gh_environment: Development       
+  #   secrets:
+  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}             
+  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}     ## ARM Client Secret
+  #     arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }} ## ARM Subscription ID
+  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}             ## ARM Tenant ID
