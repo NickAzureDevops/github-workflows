@@ -1,38 +1,41 @@
-name: terraform_plan
-
+name: "Build_TF_Plan"
 on:
   workflow_call:
     inputs:
-     path:
-      description: 'Specifies the path of the root terraform module.'
-      required: true
-      type: string
-    tf_version:
-      description: 'Specifies version of Terraform to use. Default=latest.'
-      required: false
-      type: string
-      default: latest
-    tf_environment:
-      description: 'Specifies the GitHub deployment environment.'
-      required: false
-      type: string
-      default: null
-    tf_key:
-      description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
-      required: true
-      type: string
-    tf_vars_file:
-      description: 'Specifies the Terraform tfvars file.'
-      required: true
-      type: string
+      path:
+        description: 'Specifies the path of the root terraform module.'
+        required: true
+        type: string
+      tf_version:
+        description: 'Specifies version of Terraform to use. e.g: 1.1.0 Default=latest.'
+        required: false
+        type: string
+        default: latest
+      tfbucketname:
+        description: 'Specifies the Azure Storage account container where backend Terraform state is hosted.'
+        required: true
+        type: string
+      tf_key:
+        description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
+        required: true
+        type: string
+      tf_environment:
+        description: 'Specifies the GitHub deployment environment.'
+        required: false
+        type: string
+        default: null
+      tf_vars_file:
+        description: 'Specifies the Terraform tfvars.'
+        required: true
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
-        description: '"AWS Access Key ID.'
+        description: 'AWS Access Key ID.'
         required: true
       AWS_SECRET_ACCESS_KEY:
         description: 'AWS Secret Access Key.'
         required: true
-        
+
 jobs:
   build-plan:
     runs-on: ubuntu-latest
