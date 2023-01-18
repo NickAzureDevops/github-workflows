@@ -23,11 +23,10 @@ jobs:
   #   secrets:
   #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   #     TF_ACTION_WORKING_DIR: 'terraform'
-  jobs:
-    trigger-repo:
-      runs-on: ubuntu-latest
-      steps:
-        uses: actions/github-script@v6
+  trigger-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GHA_WORKFLOW_TRIGGER }}
           script: |
