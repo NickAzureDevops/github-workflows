@@ -13,13 +13,14 @@ jobs:
         id: get-otp
         with:
           secrets: |
-            DUMMY_SECRET: 
-              name: 'Dummy secret'
+            2FA_TOKEN: 
+              name: 'Authenticate to AWS from 2FA'
               description: 'Dummy secret to demo wait-for-secrets'
       - run: |
-          echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
+          echo ${{ steps.get-otp.outputs.2FA_TOKEN }}
 
   Plan_Dev:
+    needs: build
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
@@ -32,6 +33,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   DeployDev:
+    needs: build
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
