@@ -3,15 +3,17 @@ on:
   workflow_dispatch:
     
 jobs:
-  Plan_Dev:
-    aws_authentication:
+  aws_authentication:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    outputs:
+      aws_secret: ${{ steps.aws_authentication.outputs.test }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
-        id: get-otp
+        id: aws_authentication
         with:
           secrets: |
             AWS_Authencation: 
@@ -20,20 +22,26 @@ jobs:
       - run: |
           echo ${{ steps.get-otp.outputs.AWS_Authencation }}
 
-    needs: aws_authentication
-    uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
-    with:
-      path: terraform             
-      tf_version: latest
-      tfbucketname : tfstate-nick       
-      tf_key: terraform-dev          
-      tf_vars_file: terraform.tfvars
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+  Plan_Dev:
+      runs-on: ubuntu-latest
+      needs: aws_authentication
+      steps:
+        - run: echo ${{needs.job1.outputs.aws_secret}} 
+      uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+      with:
+        path: terraform             
+        tf_version: latest
+        tfbucketname : tfstate-nick       
+        tf_key: terraform-dev          
+        tf_vars_file: terraform.tfvars
+      secrets:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   DeployDev:
     needs: Plan_Dev
+    steps:
+      - run: echo ${{needs.job1.outputs.aws_secret}} 
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
