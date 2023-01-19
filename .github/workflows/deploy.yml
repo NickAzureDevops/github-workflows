@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     
 jobs:
-  build:
+  AWS_Authencation:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
@@ -15,7 +15,7 @@ jobs:
           secrets: |
             AWS_Authencation: 
               name: 'Authenticate to AWS from 2FA'
-              description: 'Dummy secret to demo wait-for-secrets'
+              description: 'Authenicating to AWS, please wait'
       - run: |
           echo ${{ steps.get-otp.outputs.AWS_Authencation }}
 
