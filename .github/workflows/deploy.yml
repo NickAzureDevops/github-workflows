@@ -20,7 +20,7 @@ jobs:
           echo ${{ steps.get-otp.outputs.AWS_Authencation }}
 
   Plan_Dev:
-    needs: build
+    needs: AWS_Authencation
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
