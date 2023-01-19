@@ -20,10 +20,6 @@ on:
         required: false
         type: string
         default: null
-    outputs:
-      aws_authentication:
-        description: "The first output string"
-        value: ${{ jobs.aws_authentication.outputs.output1 }}
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
@@ -33,24 +29,6 @@ on:
         required: true
 
 jobs:
-  aws_authentication:
-    permissions:
-      id-token: write
-    runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.otp.outputs.aws_authentication }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: step-security/wait-for-secrets@v1
-        id: otp
-        with:
-          secrets: |
-            aws_authentication: 
-              name: 'Authenticate to AWS from 2FA'
-              description: 'Authenicating to AWS, please wait'
-      - run: |
-              echo ${{ steps.get-otp.outputs.aws_authentication }}  >> $GITHUB_OUTPUT
-
   build-plan:
     runs-on: ubuntu-latest
     environment: ${{ inputs.tf_environment }}

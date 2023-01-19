@@ -7,26 +7,22 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.otp.outputs.AWS_Authencation }}
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
-        id: get-otp
+        id: otp
         with:
           secrets: |
-            aws_authentication: 
-              name: 'Dummy secret'
-              description: 'Dummy secret to demo wait-for-secrets'
+            AWS_Authencation: 
+              name: 'Authenticate to AWS from 2FA'
+              description: 'Authenicating to AWS, please wait'
       - run: |
-          echo ${{ steps.get-otp.outputs.aws_authentication }} >> $GITHUB_OUTPUT
-
-  job2:
-      runs-on: ubuntu-latest
-      needs: aws_authentication
-      steps:
-        - run: echo ${{ needs.job1.outputs.aws_authentication }}
+          echo ${{ steps.get-otp.outputs.AWS_Authencation }}  >> $GITHUB_OUTPUT
 
   Plan_Dev:
-    needs: job2
+    needs: aws_authentication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
