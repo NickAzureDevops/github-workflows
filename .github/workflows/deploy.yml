@@ -3,23 +3,21 @@ on:
   workflow_dispatch:
     
 jobs:
-  aws_authentication:
+  build:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.otp.outputs.AWS_Authencation }}
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
-        id: otp
+        id: get-otp
         with:
           secrets: |
-            AWS_Authencation: 
-              name: 'Authenticate to AWS from 2FA'
-              description: 'Authenicating to AWS, please wait'
+            DUMMY_SECRET: 
+              name: 'Dummy secret'
+              description: 'Dummy secret to demo wait-for-secrets'
       - run: |
-          echo ${{ steps.get-otp.outputs.AWS_Authencation }}  >> $GITHUB_OUTPUT
+          echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
 
   Plan_Dev:
     needs: aws_authentication
