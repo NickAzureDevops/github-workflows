@@ -27,7 +27,7 @@ jobs:
       needs: aws_authentication
       steps:
         - run: echo ${{needs.job1.outputs.aws_secret}} 
-      uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+        - uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
       with:
         path: terraform             
         tf_version: latest
@@ -42,7 +42,7 @@ jobs:
     needs: Plan_Dev
     steps:
       - run: echo ${{needs.job1.outputs.aws_secret}} 
-    uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
+      - uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
