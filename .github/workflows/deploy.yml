@@ -19,30 +19,31 @@ jobs:
       - run: |
           echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
 
-          
-        uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
-        with:
-          path: terraform             
-          tf_version: latest
-          tfbucketname : tfstate-nick       
-          tf_key: terraform-dev          
-          tf_vars_file: terraform.tfvars
-        secrets:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+# jobs:
+#   Plan_Dev:
+#     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+#     with:
+#       path: terraform             
+#       tf_version: latest
+#       tfbucketname : tfstate-nick       
+#       tf_key: terraform-dev          
+#       tf_vars_file: terraform.tfvars
+#     secrets:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
-      DeployDev:
-        uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
-        with:
-          path: terraform             
-          tf_version: latest 
-          tfbucketname : tfstate-nick              
-          tf_key: terraform-dev            
-          tf_vars_file: terraform.tfvars
-          tf_environment: dev
-        secrets:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+#   DeployDev:
+#     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
+#     with:
+#       path: terraform             
+#       tf_version: latest 
+#       tfbucketname : tfstate-nick              
+#       tf_key: terraform-dev            
+#       tf_vars_file: terraform.tfvars
+#       tf_environment: dev
+#     secrets:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
 # jobs:
 #   call-workflow-A:
