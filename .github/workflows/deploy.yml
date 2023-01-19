@@ -3,7 +3,23 @@ on:
   workflow_dispatch:
     
 jobs:
-  Plan_Dev:
+  build:
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: step-security/wait-for-secrets@v1
+        id: get-otp
+        with:
+          secrets: |
+            DUMMY_SECRET: 
+              name: 'Dummy secret'
+              description: 'Dummy secret to demo wait-for-secrets'
+      - run: |
+          echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
+
+
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
@@ -35,3 +51,4 @@ jobs:
 #       username: CloudwithNicholas
 #     secrets:
 #       token: ${{ secrets.TOKEN }}
+
