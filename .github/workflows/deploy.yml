@@ -24,7 +24,6 @@ jobs:
   Plan_Dev:
     needs: aws_authentication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
-    run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
     with:
       path: terraform             
       tf_version: latest
