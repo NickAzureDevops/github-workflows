@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     
 jobs:
-  AWS_Authencation:
+  aws_authentication:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
           echo ${{ steps.get-otp.outputs.AWS_Authencation }}
 
   Plan_Dev:
-    needs: AWS_Authencation
+    needs: aws_authentication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             

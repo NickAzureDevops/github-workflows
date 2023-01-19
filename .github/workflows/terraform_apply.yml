@@ -60,10 +60,6 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: ${{ inputs.tf_version }}
-
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}"
       
       - name: Terraform Plan
         id: plan
