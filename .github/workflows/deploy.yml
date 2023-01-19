@@ -13,11 +13,11 @@ jobs:
         id: get-otp
         with:
           secrets: |
-            2FA_TOKEN: 
+            AWS_Authencation: 
               name: 'Authenticate to AWS from 2FA'
               description: 'Dummy secret to demo wait-for-secrets'
       - run: |
-          echo ${{ steps.get-otp.outputs.2FA_TOKEN }}
+          echo ${{ steps.get-otp.outputs.AWS_Authencation }}
 
   Plan_Dev:
     needs: build
@@ -53,4 +53,3 @@ jobs:
 #       username: CloudwithNicholas
 #     secrets:
 #       token: ${{ secrets.TOKEN }}
-
