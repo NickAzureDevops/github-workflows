@@ -2,24 +2,41 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
     
+permissions:
+  contents: read
+
 jobs:
   aws_authentication:
     permissions:
+      contents: read
       id-token: write
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.otp.outputs.test }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - uses: step-security/wait-for-secrets@v1
-        id: otp
+        id: wait-for-secrets
         with:
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           secrets: |
-            AWS_Authencation: 
-              name: 'Authenticate to AWS from 2FA'
-              description: 'Authenicating to AWS, please wait'
-      - run: |
-          echo ${{ steps.get-otp.outputs.AWS_Authencation }}  >> $GITHUB_OUTPUT
+            AWS_ACCESS_KEY_ID: 
+              name: 'AWS access key id'
+              description: 'Access key id for prod'
+            AWS_SECRET_ACCESS_KEY:
+              name: 'AWS secret access key'
+              description: 'Secret access key for prod'
+            AWS_SESSION_TOKEN:
+              name: 'AWS session token'
+              description: 'Session token for prod'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ steps.wait-for-secrets.outputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.wait-for-secrets.outputs.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ steps.wait-for-secrets.outputs.AWS_SESSION_TOKEN }}
+          aws-region: us-west-2
 
   Plan_Dev:
     needs: aws_authentication
