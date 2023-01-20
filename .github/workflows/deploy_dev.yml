@@ -3,13 +3,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  aws_authenication:
-  
-  - name: Configure AWS Credentials
-    uses: fuller-inc/actions-aws-assume-role@v1
-    with:
-      aws-region: eu-west-2
-      role-to-assume: arn:aws:iam::184353012435:role/poc_github
+  provider:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: fuller-inc/actions-aws-assume-role@v1
+        with:
+          aws-region: eu-west-2
+          role-to-assume: arn:aws:iam::184353012435:role/poc_github
       # permissions:
     #   id-token: write
     # runs-on: ubuntu-latest
