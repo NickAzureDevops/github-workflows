@@ -23,10 +23,10 @@ on:
         description: 'Specifies the GitHub deployment environment.'
         required: false
         type: string
-      # tf_vars_file:
-      #   description: 'Specifies the Terraform tfvars.'
-      #   required: true
-      #   type: string
+      tf_vars_file:
+        description: 'Specifies the Terraform tfvars.'
+        required: true
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
