@@ -22,7 +22,6 @@ jobs:
   #     - run: echo ${{ needs.job1.outputs.firstword }} 
   
   Plan_Dev:
-    needs: aws_authenication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
