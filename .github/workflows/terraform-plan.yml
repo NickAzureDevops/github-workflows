@@ -81,9 +81,6 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Compress TF Plan artifact
-        run: zip -r ${{ inputs.tf_key }}.zip ./*
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3.1.2
         with:
