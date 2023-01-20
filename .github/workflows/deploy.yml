@@ -25,7 +25,7 @@ jobs:
           echo ${{ steps.get-otp.outputs.authenication }}
 
   job1:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output@invoke-pipeline-across-repositories
+    uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
 
   job2:
     runs-on: ubuntu-latest
