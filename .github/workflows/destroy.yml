@@ -1,0 +1,49 @@
+name: "Build_Apply"
+on:
+  workflow_call:
+    inputs:
+      tf_environment:
+        description: 'Specifies the GitHub deployment environment.'
+        required: false
+        type: string
+        default: null
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        description: 'AWS Access Key ID.'
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS Secret Access Key.'
+        required: true
+        
+jobs:
+  build-plan:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.tf_environment }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.path }} 
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Setup Terraform                                                                      
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}"
+        
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Terraform destroy
+        id: destroy
+        run: terraform destroy -auto-approve
