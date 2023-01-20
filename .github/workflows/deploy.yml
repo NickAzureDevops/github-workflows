@@ -1,42 +1,23 @@
 name: "deploy_dev"
 on:
   workflow_dispatch:
-
-permissions:
-  contents: read
-
+    
 jobs:
-  publish:
+  build:
     permissions:
-      contents: read
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
-        id: wait-for-secrets
+        id: get-otp
         with:
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           secrets: |
-            AWS_ACCESS_KEY_ID: 
-              name: 'AWS access key id'
-              description: 'Access key id for prod'
-            AWS_SECRET_ACCESS_KEY:
-              name: 'AWS secret access key'
-              description: 'Secret access key for prod'
-            AWS_SESSION_TOKEN:
-              name: 'AWS session token'
-              description: 'Session token for prod'
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ steps.wait-for-secrets.outputs.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ steps.wait-for-secrets.outputs.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ steps.wait-for-secrets.outputs.AWS_SESSION_TOKEN }}
-          aws-region: eu-west-2
+            DUMMY_SECRET: 
+              name: 'Dummy secret'
+              description: 'Dummy secret to demo wait-for-secrets'
+      - run: |
+          echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
 
   Plan_Dev:
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
@@ -44,20 +25,29 @@ jobs:
       path: terraform             
       tf_version: latest
       tfbucketname : tfstate-nick       
+      tf_key: terraform-dev          
+      tf_vars_file: terraform.tfvars
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}   
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   DeployDev:
-    needs: Plan_Dev
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
+      tf_key: terraform-dev            
+      tf_vars_file: terraform.tfvars
       tf_environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}    
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
-
+# jobs:
+#   call-workflow-A:
+#     uses: CloudwithNicholas/github-workflows/.github/workflows/github_linter.yml@main 
+#     with:
+#       username: CloudwithNicholas
+#     secrets:
+#       token: ${{ secrets.TOKEN }}
