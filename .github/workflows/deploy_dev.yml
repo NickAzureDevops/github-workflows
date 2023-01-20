@@ -10,23 +10,16 @@ jobs:
     outputs:
       some_var: ${{ steps.step1.outputs.some_var }}
     steps:
-      - name: Configure AWS Credentials
-        uses: fuller-inc/actions-aws-assume-role@v1
+      - uses: actions/checkout@v3
+      - uses: step-security/wait-for-secrets@v1
+        id: get-otp
         with:
-          aws-region: eu-west-2
-          role-to-assume: arn:aws:iam::184353012435:role/poc_github
-
-
-      # - uses: actions/checkout@v3
-      # - uses: step-security/wait-for-secrets@v1
-      #   id: get-otp
-      #   with:
-      #     secrets: |
-      #       authenication: 
-      #         name: '2FA secret'
-      #         description: 'Please Enter your 2FA Token' 
-      # - run: |
-      #     echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
+          secrets: |
+            authenication: 
+              name: '2FA secret'
+              description: 'Please Enter your 2FA Token' 
+      - run: |
+          echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
 
   # job1:
   #   uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
