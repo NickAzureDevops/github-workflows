@@ -20,6 +20,7 @@ jobs:
           echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
 
   Plan_Dev:
+    needs: build
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
@@ -32,6 +33,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   DeployDev:
+    needs: Plan_Dev
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
