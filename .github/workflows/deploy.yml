@@ -18,17 +18,17 @@ jobs:
         id: get-otp
         with:
           secrets: |
-            aws_authenication: 
+            authenication: 
               name: 'Dummy secret'
               description: 'Dummy secret to demo wait-for-secrets' 
       - run: |
           echo "${{ steps.get-otp.outputs.authenication }}" >> $GITHUB_OUTPUT
   
-      - name: Set color
-        id: random-color-generator
-        run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
+      # - name: Set color
+      #   id: random-color-generator
+      #   run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
       - name: Get color
-        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+        run: echo "The selected color is ${{ steps.get-otp.outputs.authenication }}"
   
   Plan_Dev:
     needs: aws_authenication
