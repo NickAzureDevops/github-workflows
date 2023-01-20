@@ -7,14 +7,14 @@ permissions:
 
 jobs:
 
-  aws_authenication:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Configure AWS Credentials
-        uses: fuller-inc/actions-aws-assume-role@v1
-        with:
-          aws-region: eu-west-2
-          role-to-assume: arn:aws:iam::184353012435:role/poc_github
+  # aws_authenication:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Configure AWS Credentials
+  #       uses: fuller-inc/actions-aws-assume-role@v1
+  #       with:
+  #         aws-region: eu-west-2
+  #         role-to-assume: arn:aws:iam::184353012435:role/poc_github
 
   # job1:
   #   uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
