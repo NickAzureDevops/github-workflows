@@ -11,19 +11,10 @@ on:
         required: false
         type: string
         default: latest
-      # tfbucketname:
-      #   description: 'Specifies the AWS Bucket account container where backend Terraform state is hosted.'
-      #   required: true
-      #   type: string
-      # # tf_key:
-      #   description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
-      #   required: true
-      #   type: string
       tf_environment:
         description: 'Specifies the GitHub deployment environment.'
         required: false
         type: string
-        default: null
       tf_vars_file:
         description: 'Specifies the Terraform tfvars.'
         required: true
