@@ -30,7 +30,6 @@ jobs:
     with:
       path: terraform             
       tf_version: latest
-      tf_vars_file: terraform.tfvars
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -41,7 +40,6 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tf_vars_file: terraform.tfvars
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
