@@ -39,7 +39,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
       tf_environment: dev
