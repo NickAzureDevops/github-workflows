@@ -9,7 +9,7 @@ jobs:
     uses: fuller-inc/actions-aws-assume-role@v1
     with:
       aws-region: eu-west-2
-      role-to-assume: arn:aws:iam::184353012435:role/poc_github-eu-west-2
+      role-to-assume: arn:aws:iam::184353012435:role/poc_github
       # permissions:
     #   id-token: write
     # runs-on: ubuntu-latest
