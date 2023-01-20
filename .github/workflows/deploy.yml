@@ -22,7 +22,7 @@ jobs:
               name: 'Dummy secret'
               description: 'Dummy secret to demo wait-for-secrets' 
       - run: |
-          echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
+          echo "${{ steps.get-otp.outputs.authenication }}" >> $GITHUB_OUTPUT
   
       # - name: Set color
       #   id: random-color-generator
