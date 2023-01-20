@@ -2,6 +2,9 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
 
+env:
+  SOME_VAR: test
+
 jobs:
   aws_authenication:
     permissions:
@@ -19,14 +22,16 @@ jobs:
               name: 'Dummy secret'
               description: 'Dummy secret to demo wait-for-secrets' 
       - run: |
-          echo HELLO=${{ steps.get-otp.outputs.authenication }}
-          echo HELLO >> $GITHUB_OUTPUT
-  
-      # - name: Set color
-      #   id: random-color-generator
-      #   run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
-      - name: Get color
-        run: echo "The selected color is ${{ steps.get-otp.outputs.authenication }}"
+          echo ${{ steps.get-otp.outputs.authenication }}
+
+  job1:
+    uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output@invoke-pipeline-across-repositories
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - run: echo ${{ needs.job1.outputs.firstword }} ${{ needs.job1.outputs.secondword }}
   
   Plan_Dev:
     needs: aws_authenication
