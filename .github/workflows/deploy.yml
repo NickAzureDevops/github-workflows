@@ -1,12 +1,17 @@
 name: "deploy_dev"
 on:
   workflow_dispatch:
-    
+
+env:
+  SOME_VAR: test
+
 jobs:
   aws_authenication:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    outputs:
+      some_var: ${{ steps.step1.outputs.some_var }}
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
@@ -17,11 +22,14 @@ jobs:
               name: 'Dummy secret'
               description: 'Dummy secret to demo wait-for-secrets' 
       - run: |
-          echo ${{ steps.get-otp.outputs.aws_authenication }} >> $GITHUB_OUTPUT
-
+          echo "${{ steps.get-otp.outputs.authenication }}" >> $GITHUB_OUTPUT
+  
+      - name: Set color
+        id: random-color-generator
+        run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
       - name: Get color
-        run: echo "The selected color is ${{ steps.get-otp.outputs.steps }}"
-
+        run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+  
   Plan_Dev:
     needs: aws_authenication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
