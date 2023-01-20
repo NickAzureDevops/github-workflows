@@ -2,7 +2,11 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write 
+
 jobs:
+
   aws_authenication:
     runs-on: ubuntu-latest
     steps:
