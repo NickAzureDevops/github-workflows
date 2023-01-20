@@ -23,3 +23,25 @@ jobs:
         run: echo "::set-output name=firstword::hello"
       - id: step2
         run: echo "::set-output name=secondword::world"
+
+
+  # aws_authenication:
+  #   name: Generate output
+  #   permissions:
+  #     id-token: write
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     output1: ${{ steps.get-otp.outputs.firstword }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: step-security/wait-for-secrets@v1
+  #       id: get-otp
+  #       with:
+  #         secrets: |
+  #           authenication: 
+  #             name: '2FA secret'
+  #             description: 'Please Enter your 2FA Token' 
+  #     - run: |
+  #         echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
+  #         echo 
+

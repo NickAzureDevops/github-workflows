@@ -2,36 +2,39 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
 
-env:
-  SOME_VAR: test
-
 jobs:
   aws_authenication:
-    permissions:
-      id-token: write
-    runs-on: ubuntu-latest
-    outputs:
-      some_var: ${{ steps.step1.outputs.some_var }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: step-security/wait-for-secrets@v1
-        id: get-otp
-        with:
-          secrets: |
-            authenication: 
-              name: 'Dummy secret'
-              description: 'Dummy secret to demo wait-for-secrets' 
-      - run: |
-          echo ${{ steps.get-otp.outputs.authenication }}
+  
+  - name: Configure AWS Credentials
+    uses: fuller-inc/actions-aws-assume-role@v1
+    with:
+      aws-region: eu-west-2
+      role-to-assume: arn:aws:iam::184353012435:role/poc_github-eu-west-2
+      # permissions:
+    #   id-token: write
+    # runs-on: ubuntu-latest
+    # outputs:
+    #   some_var: ${{ steps.step1.outputs.some_var }}
+    # steps:
+    #   - uses: actions/checkout@v3
+    #   - uses: step-security/wait-for-secrets@v1
+    #     id: get-otp
+    #     with:
+    #       secrets: |
+    #         authenication: 
+    #           name: '2FA secret'
+    #           description: 'Please Enter your 2FA Token' 
+    #   - run: |
+    #       echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
 
-  job1:
-    uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
+  # job1:
+  #   uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
 
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    steps:
-      - run: echo ${{ needs.job1.outputs.firstword }} 
+  # job2:
+  #   runs-on: ubuntu-latest
+  #   needs: job1
+  #   steps:
+  #     - run: echo ${{ needs.job1.outputs.firstword }} 
   
   Plan_Dev:
     needs: aws_authenication
