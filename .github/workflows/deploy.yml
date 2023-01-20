@@ -7,8 +7,6 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
-    output1: ${{ steps.get-otp.outputs.get-otp }}
-
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
@@ -21,8 +19,8 @@ jobs:
       - run: |
           echo ${{ steps.get-otp.outputs.aws_authenication }} >> $GITHUB_OUTPUT
 
-      - name: Display
-      - run: echo ${{needs.job1.outputs.output1}} 
+      - name: Get color
+        run: echo "The selected color is ${{ steps.get-otp.outputs.steps }}"
 
   Plan_Dev:
     needs: aws_authenication
