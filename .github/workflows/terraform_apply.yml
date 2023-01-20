@@ -1,4 +1,4 @@
-name: "Build_Apply"
+name: "build_apply"
 on:
   workflow_call:
     inputs:

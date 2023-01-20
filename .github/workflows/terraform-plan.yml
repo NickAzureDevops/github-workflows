@@ -1,4 +1,4 @@
-name: "Build_TF_Plan"
+name: "build_plan"
 on:
   workflow_call:
     inputs:

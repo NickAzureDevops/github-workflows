@@ -1,4 +1,4 @@
-name: "Destroy_Dev"
+name: "destroy_dev"
 on:
   workflow_call:
     inputs:
