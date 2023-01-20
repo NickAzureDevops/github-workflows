@@ -22,7 +22,7 @@ jobs:
   #     - run: echo ${{ needs.job1.outputs.firstword }} 
   
   Plan_Dev:
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     with:
       path: terraform             
       tf_version: latest
@@ -35,7 +35,7 @@ jobs:
 
   DeployDev:
     needs: Plan_Dev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
     with:
       path: terraform             
       tf_version: latest 
