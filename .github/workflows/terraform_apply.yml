@@ -44,7 +44,7 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.path }}
     env:
-      tfbucketname: ${{ inputs.tfbucketname }}
+      tfbucketname: tfstate-nick1
       # TF_KEY: ${{ inputs.tf_key }}.tfstate
       # TF_VARS: ${{ inputs.tf_vars_file }}
       ###AZURE Client details###
