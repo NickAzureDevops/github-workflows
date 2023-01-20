@@ -3,24 +3,29 @@ on:
   workflow_dispatch:
     
 jobs:
-  build:
+  aws_authenication:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    output1: ${{ steps.get-otp.outputs.get-otp }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: step-security/wait-for-secrets@v1
         id: get-otp
         with:
           secrets: |
-            DUMMY_SECRET: 
+            aws_authenication: 
               name: 'Dummy secret'
-              description: 'Dummy secret to demo wait-for-secrets'
+              description: 'Dummy secret to demo wait-for-secrets' 
       - run: |
-          echo ${{ steps.get-otp.outputs.DUMMY_SECRET }}
+          echo ${{ steps.get-otp.outputs.aws_authenication }} >> $GITHUB_OUTPUT
+
+      - name: Display
+      - run: echo ${{needs.job1.outputs.output1}} 
 
   Plan_Dev:
-    needs: build
+    needs: aws_authenication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
