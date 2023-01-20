@@ -65,7 +65,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=${{ env.TF_KEY }}"
       
       - name: Terraform Validate
         id: validate
