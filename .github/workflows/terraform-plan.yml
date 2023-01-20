@@ -1,4 +1,4 @@
-name: "build_plan"
+name: "Build_TF_Plan"
 on:
   workflow_call:
     inputs:
@@ -11,9 +11,22 @@ on:
         required: false
         type: string
         default: latest
+      tfbucketname:
+        description: 'Specifies the AWS Bucket account container where backend Terraform state is hosted.'
+        required: true
+        type: string
+      tf_key:
+        description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
+        required: true
+        type: string
       tf_environment:
         description: 'Specifies the GitHub deployment environment.'
         required: false
+        type: string
+        default: null
+      tf_vars_file:
+        description: 'Specifies the Terraform tfvars.'
+        required: true
         type: string
     secrets:
       AWS_ACCESS_KEY_ID:
@@ -32,10 +45,11 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.path }}
     env:
-      tfbucketname: tfstate-nick1
+      tfbucketname: ${{ inputs.tfbucketname }}
+      TF_KEY: ${{ inputs.tf_key }}.tfstate
+      TF_VARS: ${{ inputs.tf_vars_file }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_KEY: terraform.tfstate
   
     steps:
       - name: Checkout
@@ -52,7 +66,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=${{ env.TF_KEY }}"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
       
       - name: Terraform Validate
         id: validate
@@ -60,7 +74,31 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan --out=plan.tfplan      
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Compress TF Plan artifact
+        run: zip -r ${{ inputs.tf_key }}.zip ./*
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: "${{ inputs.tf_key }}"
+          path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
+          retention-days: 5
+
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan 
         continue-on-error: true
 
       - name: Terraform Plan Status

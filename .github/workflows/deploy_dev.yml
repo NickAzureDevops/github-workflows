@@ -2,19 +2,15 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
 
-permissions:
-  id-token: write 
-
 jobs:
-
-  # aws_authenication:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Configure AWS Credentials
-  #       uses: fuller-inc/actions-aws-assume-role@v1
-  #       with:
-  #         aws-region: eu-west-2
-  #         role-to-assume: arn:aws:iam::184353012435:role/poc_github
+#   aws_authenication:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Configure AWS Credentials
+#         uses: fuller-inc/actions-aws-assume-role@v1
+#         with:
+#           aws-region: eu-west-2
+#           role-to-assume: arn:aws:iam::184353012435:role/poc_github
 
   # job1:
   #   uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
@@ -26,10 +22,14 @@ jobs:
   #     - run: echo ${{ needs.job1.outputs.firstword }} 
   
   Plan_Dev:
+    needs: aws_authenication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest
+      tfbucketname : tfstate-nick       
+      tf_key: terraform-dev          
+      tf_vars_file: terraform.tfvars
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -40,6 +40,10 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
+      tfbucketname : tfstate-nick              
+      tf_key: terraform-dev            
+      tf_vars_file: terraform.tfvars
+      tf_environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
