@@ -1,4 +1,4 @@
-name: "Build_TF_Plan"
+name: "build_plan"
 on:
   workflow_call:
     inputs:
@@ -72,9 +72,13 @@ jobs:
         id: validate
         run: terraform validate
 
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
       - name: Terraform Plan
         id: plan
-        run: terraform plan --var-file=$TF_VARS 
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -90,24 +94,3 @@ jobs:
           name: "${{ inputs.tf_key }}"
           path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
           retention-days: 5
-
-      
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan 
-        continue-on-error: true
-
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
-      - name: Save Artifact
-        id: save-artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: plan-tf-plan
-          path: ${{ inputs.path }}/tfplan

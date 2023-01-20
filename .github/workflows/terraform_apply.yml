@@ -1,4 +1,4 @@
-name: "Build_Apply"
+name: "buils_apply"
 on:
   workflow_call:
     inputs:
@@ -90,7 +90,6 @@ jobs:
           name: "${{ inputs.tf_key }}"
           path: "${{ inputs.path }}/${{ inputs.tf_key }}.zip"
           retention-days: 5
-
       
       - name: Terraform Plan
         id: plan
