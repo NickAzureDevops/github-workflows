@@ -11,6 +11,10 @@ on:
         required: false
         type: string
         default: latest
+      tfbucketname:
+        description: 'Specifies the AWS Bucket account container where backend Terraform state is hosted.'
+        required: true
+        type: string
       # tf_key:
       #   description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
       #   required: true
@@ -61,7 +65,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=${{ env.TF_KEY }}"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
       
       - name: Terraform Validate
         id: validate
