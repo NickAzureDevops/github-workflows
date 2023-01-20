@@ -3,8 +3,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  aws_authenication:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      statuses: write
+      contents: read
     steps:
       - name: Configure AWS Credentials
         uses: fuller-inc/actions-aws-assume-role@v1
