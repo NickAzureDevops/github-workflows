@@ -72,13 +72,9 @@ jobs:
         id: validate
         run: terraform validate
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-
       - name: Terraform Plan
         id: plan
-        run: terraform plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
         continue-on-error: true
 
       - name: Terraform Plan Status
