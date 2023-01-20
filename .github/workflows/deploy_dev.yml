@@ -3,33 +3,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  aws_authenication:
     permissions:
       id-token: write
-
+    runs-on: ubuntu-latest
+    outputs:
+      some_var: ${{ steps.step1.outputs.some_var }}
     steps:
       - name: Configure AWS Credentials
         uses: fuller-inc/actions-aws-assume-role@v1
         with:
           aws-region: eu-west-2
           role-to-assume: arn:aws:iam::184353012435:role/poc_github
-      # permissions:
-    #   id-token: write
-    # runs-on: ubuntu-latest
-    # outputs:
-    #   some_var: ${{ steps.step1.outputs.some_var }}
-    # steps:
-    #   - uses: actions/checkout@v3
-    #   - uses: step-security/wait-for-secrets@v1
-    #     id: get-otp
-    #     with:
-    #       secrets: |
-    #         authenication: 
-    #           name: '2FA secret'
-    #           description: 'Please Enter your 2FA Token' 
-    #   - run: |
-    #       echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
+
+
+      # - uses: actions/checkout@v3
+      # - uses: step-security/wait-for-secrets@v1
+      #   id: get-otp
+      #   with:
+      #     secrets: |
+      #       authenication: 
+      #         name: '2FA secret'
+      #         description: 'Please Enter your 2FA Token' 
+      # - run: |
+      #     echo ${{ steps.get-otp.outputs.authenication }} >> $GITHUB_OUTPUT
 
   # job1:
   #   uses: CloudwithNicholas/github-workflows/.github/workflows/reuseable-output.yml@invoke-pipeline-across-repositories
