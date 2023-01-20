@@ -3,9 +3,7 @@ on:
   workflow_dispatch:
     
 jobs:
-
   Plan_Dev:
-    needs: aws_authentication
     uses: CloudwithNicholas/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
