@@ -2,9 +2,6 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
 
-env:
-  SOME_VAR: test
-
 jobs:
   aws_authenication:
     permissions:
