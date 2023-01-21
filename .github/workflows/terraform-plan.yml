@@ -84,5 +84,5 @@ jobs:
       - name: Download TF Plan
         uses: actions/upload-artifact@v3
         with:
-          name: TF_Plan
-          path: "${{ inputs.path }}/${{ inputs.tf_key }}"
+          name: ${{ inputs.tf_key }}
+          path: "${{ inputs.path }}/plan.tfplan"
