@@ -81,10 +81,11 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      # - name: Save Artifact
-      #   id: save-artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: plan-tf-plan
-      #     path: ${{ inputs.path }}
-
+      - name: Save Artifact
+        id: save-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: plan-tf-plan
+          path: "${{ inputs.path }}/plan.tfplan"
+ 
+ 
