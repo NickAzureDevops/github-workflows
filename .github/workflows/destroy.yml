@@ -3,14 +3,18 @@ on:
   workflow_dispatch:
 
 env: 
-  TF_KEY: terraform-dev 
+  tf_key: terraform-dev.tfstate       
   tfbucketname: tfstate-nick1 
   tf_version: latest
   TF_VARS: terraform.tfvars
+  environment: dev
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  working-directory: terraform
 
 jobs:
-  detroy_dev:
-    runs-on: ubuntu-latest    
+  destroy_dev:
+    runs-on: ubuntu-latest
     steps:
         - name: Checkout
           uses: actions/checkout@v2
@@ -22,11 +26,11 @@ jobs:
 
         - name: Terraform Init
           id: init
-          run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=${{ env.TF_KEY }}"
+          run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=${{ env.tf_key }}"
           
         - name: Terraform Plan
           id: plan
-          run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+          run: terraform plan 
           continue-on-error: true
 
         - name: Terraform destroy
