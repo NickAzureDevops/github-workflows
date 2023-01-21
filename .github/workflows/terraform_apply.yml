@@ -61,15 +61,15 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
+        run: terraform init
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        run: terraform plan --var-file=$TF_VARS 
         continue-on-error: true
     
       - name: Terraform Apply
-        run: terraform apply plan.tfplan
+        run: terraform apply 
       
       - name: Download TF Plan
         uses: actions/upload-artifact@v3
