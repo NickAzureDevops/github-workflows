@@ -71,7 +71,8 @@ jobs:
         continue-on-error: true
     
       - name: Terraform Apply
-        run: terraform apply 
+        # if: github.ref == 'refs/heads/main'
+        run: terraform apply plan.tfplan
       
       - name: Download TF Plan
         uses: actions/upload-artifact@v3
