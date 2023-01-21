@@ -1,7 +1,21 @@
-name: "deploy_dev"
+name: "destroy_dev"
 on:
   workflow_dispatch:
-    
+
+  workflow_call:
+    inputs:
+      tf_environment:
+        description: 'Specifies the GitHub deployment environment.'
+        required: false
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        description: 'AWS Access Key ID.'
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        description: 'AWS Secret Access Key.'
+        required: true
+        
 jobs:
   build-plan:
     runs-on: ubuntu-latest
