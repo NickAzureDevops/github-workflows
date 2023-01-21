@@ -85,4 +85,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: plan.tfplan
-          path: "${{ inputs.path }}/tf_plan"
+          path: "${{ inputs.path }}/plan.tfplan"

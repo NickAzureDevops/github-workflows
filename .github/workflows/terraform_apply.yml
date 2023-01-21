@@ -56,9 +56,9 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          name: ${{ inputs.tf_key }}
-          path: "${{ inputs.path }}/tf_plan"
-                  
+          name: plan.tfplan
+          path: "${{ inputs.path }}/plan.tfplan"
+
       - name: Setup Terraform
         # if: github.event_name == 'pull_request'
         uses: hashicorp/setup-terraform@v2.0.3
