@@ -53,12 +53,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   
     steps:    
-      - name: Download Artifact
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: ${{ inputs.tf_key }}
-          path: "${{ inputs.path }}/plan.tfplan"
-                
       - name: Setup Terraform
         # if: github.event_name == 'pull_request'
         uses: hashicorp/setup-terraform@v2.0.3
@@ -69,11 +63,17 @@ jobs:
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
 
-      # - name: Terraform Plan
-      #   id: plan
-      #   run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
-      #   continue-on-error: true
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        continue-on-error: true
     
       - name: Terraform Apply
         run: terraform apply plan.tfplan
+      
+      - name: Download TF Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.tf_key }}
+          path: "${{ inputs.path }}/plan.tfplan"
 
