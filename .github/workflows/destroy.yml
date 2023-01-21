@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 env: 
-  tf_key: terraform-dev.tfstate       
+  tf_key: terraform-dev     
   tfbucketname: tfstate-nick1 
   tf_version: latest
   TF_VARS: terraform.tfvars
