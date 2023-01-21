@@ -53,12 +53,12 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   
     steps:    
-      - name: Download TF Plan
-        uses: actions/download-artifact@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@v3.0.2
         with:
           name: ${{ inputs.tf_key }}
-          path: ${{ inputs.path }}
-        
+          path: "${{ inputs.path }}/tf_plan"
+                  
       - name: Setup Terraform
         # if: github.event_name == 'pull_request'
         uses: hashicorp/setup-terraform@v2.0.3
