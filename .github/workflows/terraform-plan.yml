@@ -85,7 +85,7 @@ jobs:
         id: save-artifact
         uses: actions/upload-artifact@v3
         with:
-          name: plan-tf-plan
+          name: plan.tfplan
           path: "${{ inputs.path }}/plan.tfplan"
  
  

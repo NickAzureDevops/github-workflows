@@ -56,7 +56,7 @@ jobs:
       - name: Download TF Plan
         uses: actions/download-artifact@v2
         with:
-          name: tf_plan
+          name: plan.tfplan
           path: "${{ inputs.path }}"
         
       - name: Setup Terraform
