@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
    
 jobs:
-  build-plan:
+  destroy_dev:
     runs-on: ubuntu-latest
     environment: dev
     defaults:
@@ -39,4 +39,4 @@ jobs:
 
         - name: Terraform destroy
           id: destroy
-          run: terraform destroy 
+          run: terraform destroy plan.tfplan
