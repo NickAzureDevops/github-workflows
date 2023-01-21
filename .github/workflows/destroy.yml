@@ -34,9 +34,9 @@ jobs:
           
         - name: Terraform Plan
           id: plan
-          run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+          run: terraform plan --var-file=$TF_VARS 
           continue-on-error: true
 
         - name: Terraform destroy
           id: destroy
-          run: terraform destroy plan.tfplan
+          run: terraform destroy 
