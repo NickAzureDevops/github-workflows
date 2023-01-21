@@ -5,6 +5,8 @@ on:
 env: 
   TF_KEY: terraform-dev 
   tfbucketname: tfstate-nick1 
+  tf_version: latest
+  TF_VARS: terraform.tfvars
 
 jobs:
   detroy_dev:
@@ -13,8 +15,10 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2
           
-        - name: Setup Terraform                                                                      
-          uses: hashicorp/setup-terraform@v1
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v2.0.3
+          with:
+            terraform_version: ${{ env.tf_version }}
 
         - name: Terraform Init
           id: init
