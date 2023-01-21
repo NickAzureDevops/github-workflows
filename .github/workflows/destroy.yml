@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-plan:
+  detroy_dev:
     runs-on: ubuntu-latest    
     steps:
         - name: Checkout
@@ -18,7 +18,7 @@ jobs:
           
         - name: Terraform Plan
           id: plan
-          run: terraform plan --var-file=$TF_VARS --out=plan.tfplan >> $GITHUB_OUTPUT
+          run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
           continue-on-error: true
 
         - name: Terraform destroy
