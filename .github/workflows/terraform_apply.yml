@@ -53,19 +53,21 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   
     steps:    
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
       - name: Setup Terraform
-        # if: github.event_name == 'pull_request'
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: ${{ inputs.tf_version }}
 
       - name: Terraform Init
         id: init
-        run: terraform init
-
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
+      
       - name: Terraform Plan
         id: plan
-        run: terraform plan --var-file=$TF_VARS 
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
         continue-on-error: true
     
       - name: Terraform Apply
