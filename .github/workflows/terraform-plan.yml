@@ -81,11 +81,10 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Save Artifact
-        id: save-artifact
+      - name: Download TF Plan
         uses: actions/upload-artifact@v3
         with:
           name: plan.tfplan
           path: "${{ inputs.path }}/${{ inputs.tf_key }}"
- 
+
  

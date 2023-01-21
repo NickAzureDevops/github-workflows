@@ -69,7 +69,6 @@ jobs:
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
 
-
       # - name: Terraform Plan
       #   id: plan
       #   run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
