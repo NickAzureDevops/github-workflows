@@ -39,6 +39,6 @@ jobs:
 
         - name: Terraform destroy
           id: destroy
-          run: terraform destroy plan.tfplan
+          run: terraform destroy
 
   
