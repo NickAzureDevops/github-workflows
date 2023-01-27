@@ -1,0 +1,52 @@
+name: Upload action
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      short_commit:
+        required: true
+        type: string
+      artifact:
+        required: true
+        type: string
+      bucket_key:
+        required: true
+        type: string
+      build_folder:
+        required: false
+        type: string
+        default: dist
+    secrets:
+      AWS_ACCOUNT:
+        required: true
+      AWS_REGION:
+        required: true
+      BUCKET_NAME:
+        required: true
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+    steps:
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/GithubActionsRole
+          role-session-name: GithubActionsSession
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Download build artifact
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.build_folder }}
+      - name: Upload to s3
+        run: >
+          aws s3api put-object
+          --tagging short_commit_id=${{ inputs.short_commit }}
+          --bucket ${{ secrets.BUCKET_NAME }}
+          --key ${{ inputs.bucket_key }}
+          --body ${{steps.download.outputs.download-path}}/${{ inputs.artifact }}
