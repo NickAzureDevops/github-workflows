@@ -1,4 +1,4 @@
-name: AWS test workflow
+name: "aws-assume-role"
 
 on:
   workflow_dispatch:
