@@ -1,0 +1,38 @@
+name: "ci"
+
+on:
+  workflow_dispatch:
+    secrets:
+      AWS_REGION:
+        required: true
+    outputs:
+      dev_auth: ${{ jobs.aws-github-authentication.outputs.dev_output }}
+   
+env:
+  AWS_REGION : eu-west-1
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  aws-github-authentication:
+    runs-on: ubuntu-latest
+    outputs:
+      dev_output: ${{ steps.dev_authentication.outputs.dev_auth }}
+    steps:
+      - id: dev_authentication
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::769086804114:role/dvsamot-recalls-development-github
+          aws-region: ${{ env.AWS_REGION }}      
+        run: echo "dev_output=hello" >> $GITHUB_OUTPUT
+  
+  job2:
+    runs-on: ubuntu-latest
+    needs: aws-github-authentication
+
+    steps:
+      - run: echo ${{needs.aws-github-authentication:.outputs.dev_output}}
+
+

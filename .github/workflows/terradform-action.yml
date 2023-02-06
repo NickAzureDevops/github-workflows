@@ -1,0 +1,136 @@
+name: Terraform Action
+
+on:
+  workflow_call:
+    inputs: 
+      terraform_version: 
+        description: 'Terraform version'
+        required: true
+        type: string
+        default: '1.3.7'
+      actions: 
+        description: 'Terraform actions'
+        required: true
+        type: string
+        default: 'plan'
+      projects: 
+        description: 'Terraform projects'
+        required: true
+        type: string
+      environment: 
+        description: 'Terraform environment'
+        required: true
+        type: string
+      component: 
+        description: 'Terraform component'
+        required: true
+        type: string
+      group: 
+        description: 'Terraform group'
+        required: true
+        type: string
+        default: 'dev'
+      bucket-prefix: 
+        description: 'AWS Terraform bucket'
+        required: true
+        type: string
+      region:
+        description: 'AWS region'
+        required: true
+        type: string
+
+jobs:
+  terraform-action:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    
+    defaults:
+      run:
+        shell: bash
+        component: ${{ inputs.component }}
+        working-directory: ${{ inputs.component }}
+
+    env:
+      bucket-prefix: ${{ inputs.bucket-prefix }}
+      ###Removed After Test ###
+      # TF_KEY: ${{ inputs.tf_key }}.tfstate
+      # TF_VARS: ${{ inputs.tf_vars_file }}
+      # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+    steps: 
+
+      - name: Checkout dvsa/recalls-infra project 
+        uses: actions/checkout@v3
+        with:
+          repository: dvsa/recalls-infra
+          path: bin
+
+      - name: Running Terraform BootStrap script
+        run: bin/terraform-bootstrap.sh 
+    
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: 
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+      - name: Terraform Init
+        run: terraform init -backend-config="bucket=${{ env.bucket-prefix }}
+      
+      - name: Terraform Plan
+        if: ${{ contains(inputs.actions, 'plan', ) }}
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Save Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.group }}
+          path: "${{ inputs.component }}/plan.tfplan"
+        
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+           const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+ 
+           <details><summary>Show Plan</summary>
+ 
+           \`\`\`\n
+           ${process.env.PLAN}
+           \`\`\`
+ 
+           </details>
+           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+ 
+           github.rest.issues.createComment({
+             issue_number: context.issue.number,
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             body: output
+           })
+ 
+      - name: Terraform Apply
+        if: ${{ contains(inputs.actions, 'apply') }} || github.ref == 'refs/heads/CICD'
+        run: terraform apply tfplan
+      
+      - name: Terraform Destroy
+        if: ${{ contains(inputs.actions, 'destroy') }}
+        run: terraform destroy -auto-approve
