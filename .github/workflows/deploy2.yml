@@ -25,9 +25,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::769086804114:role/dvsamot-recalls-development-github
-          aws-region: ${{ env.AWS_REGION }}      
-        run: echo "dev_output=hello" >> $GITHUB_OUTPUT
-  
+          aws-region: ${{ env.AWS_REGION }}        
   job2:
     runs-on: ubuntu-latest
     needs: aws-github-authentication
