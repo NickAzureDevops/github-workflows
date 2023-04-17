@@ -63,7 +63,7 @@ jobs:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tf_key: terraform-int           
       tf_vars_file: terraform.tfvars
       environment: int_deploy
     secrets:
@@ -77,8 +77,8 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tfbucketname : tfstate-nick          
+      tf_key: terraform-int            
       tf_vars_file: terraform.tfvars
       environment: int_deploy
     secrets:
@@ -93,7 +93,7 @@ jobs:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tf_key: terraform-preprod         
       tf_vars_file: terraform.tfvars
       environment: pre-pod
     secrets:
@@ -108,7 +108,7 @@ jobs:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tf_key: terraform-preprod           
       tf_vars_file: terraform.tfvars
       environment: prepod
     secrets:
@@ -123,7 +123,7 @@ jobs:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tf_key: terraform-prod           
       tf_vars_file: terraform.tfvars
       environment: prod
     secrets:
@@ -138,7 +138,7 @@ jobs:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
-      tf_key: terraform-dev            
+      tf_key: terraform-prod            
       tf_vars_file: terraform.tfvars
       environment: prod
     secrets:
