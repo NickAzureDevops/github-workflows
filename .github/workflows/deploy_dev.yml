@@ -117,7 +117,7 @@ jobs:
 
   prod_plan:
     needs: pre-pod_deploy
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories\
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     if: ${{ inputs.prod_deploy }}
     with:
       path: terraform             
