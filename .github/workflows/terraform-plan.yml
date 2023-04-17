@@ -2,14 +2,6 @@ name: "build_plan"
 on:
   workflow_call:
     inputs:
-      environment:
-        type: string
-        description: Environment to deploy to
-        required: true
-      branch_tag:
-        type: string
-        description: Enter Release Branch or tag
-        required: true
       path:
         description: 'Specifies the path of the root terraform module.'
         required: true
@@ -27,6 +19,11 @@ on:
         description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
         required: true
         type: string
+      tf_environment:
+        description: 'Specifies the GitHub deployment environment.'
+        required: false
+        type: string
+        default: null
       tf_vars_file:
         description: 'Specifies the Terraform tfvars.'
         required: true
@@ -42,7 +39,7 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.tf_environment }}
     defaults:
       run:
         shell: bash
