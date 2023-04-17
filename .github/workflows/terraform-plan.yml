@@ -20,7 +20,7 @@ on:
         required: true
         type: string
       environment:
-        description: 'Specifies the GitHub deployment environment.'
+        description: 'Specifies the environment name.'
         required: true
         type: string
       tf_vars_file:
