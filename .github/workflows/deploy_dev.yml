@@ -2,6 +2,35 @@ name: "deploy_dev"
 
 on:
   workflow_dispatch:
+    inputs: 
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+      tf_version:
+        description: 'Terraform version'
+        required: true
+        default: 'latest'
+      tf_vars_file:
+        description: 'Terraform variables file'
+        required: true
+        default: 'terraform.tfvars'
+      tf_key:
+        description: 'Terraform state key'
+        required: true
+        default: 'terraform-dev'
+      tfbucketname:
+        description: 'Terraform state bucket name'
+        required: true
+        default: 'tfstate-nick1'
+      tf_environment:
+        description: 'Terraform environment'
+        required: true
+        default: 'dev'
+      path:
+        description: 'Path to terraform files'
+        required: true
+        default: 'terraform'
 
 jobs:
 
