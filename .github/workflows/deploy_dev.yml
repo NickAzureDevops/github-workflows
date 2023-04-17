@@ -75,7 +75,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   int_deploy:
-    needs: DeployDev
+    needs: int_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
