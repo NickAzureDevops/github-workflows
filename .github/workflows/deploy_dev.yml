@@ -3,45 +3,39 @@ name: "deploy_dev"
 on:
   workflow_dispatch:
     inputs: 
-      environment:
-        description: 'Environment to deploy to'
+      dev_deploy:
+        description: Enable deployment to development environment
         required: true
-        default: 'dev'
-      tf_version:
-        description: 'Terraform version'
+        default: true
+        type: boolean
+      int_deploy:
+        description: Enable deployment to integration environment
         required: true
-        default: 'latest'
-      tf_vars_file:
-        description: 'Terraform variables file'
-        required: true
-        default: 'terraform.tfvars'
-      tf_key:
-        description: 'Terraform state key'
-        required: true
-        default: 'terraform-dev'
-      tfbucketname:
-        description: 'Terraform state bucket name'
-        required: true
-        default: 'tfstate-nick1'
-      tf_environment:
-        description: 'Terraform environment'
-        required: true
-        default: 'dev'
-      path:
-        description: 'Path to terraform files'
-        required: true
-        default: 'terraform'
+        default: false
+        type: boolean
+      preprod_deploy:
+        description: Enable deployment to preproduction environment
+        required: false
+        default: false
+        type: boolean
+      prod_deploy:
+        description: Enable deployment to production environment
+        required: false
+        default: false
+        type: boolean
 
 jobs:
 
   Plan_Dev:
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: ${{ inputs.dev_deploy }}
     with:
       path: terraform             
       tf_version: latest
       tfbucketname : tfstate-nick1       
       tf_key: terraform-dev          
       tf_vars_file: terraform.tfvars
+      environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -49,13 +43,14 @@ jobs:
   DeployDev:
     needs: Plan_Dev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
+    if: ${{ inputs.dev_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick1              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: dev
+      environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -63,13 +58,14 @@ jobs:
   int_plan:
     needs: DeployDev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: ${{ inputs.int_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: int
+      environment: int_deploy
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -77,13 +73,14 @@ jobs:
   int_deploy:
     needs: int_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    if: ${{ inputs.int_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: int
+      environment: int_deploy
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -91,13 +88,14 @@ jobs:
   pre-pod_plan:
     needs: int_deploy 
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: ${{ inputs.preprod_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: pre-pod
+      environment: pre-pod
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -105,27 +103,29 @@ jobs:
   pre-pod_deploy:
     needs: pre-pod_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    if: ${{ inputs.preprod_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: pre-pod
+      environment: prepod
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
 
   prod_plan:
     needs: pre-pod_deploy
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories\
+    if: ${{ inputs.prod_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: pre-pod
+      environment: prod
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
@@ -133,13 +133,14 @@ jobs:
   prod_deploy:
     needs: prod_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    if: ${{ inputs.prod_deploy }}
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: pre-pod
+      environment: prod
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  

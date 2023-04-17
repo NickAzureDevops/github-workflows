@@ -19,7 +19,7 @@ on:
         description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
         required: true
         type: string
-      tf_environment:
+      environment:
         description: 'Specifies the GitHub deployment environment.'
         required: false
         type: string
@@ -39,7 +39,7 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.tf_environment }}
+    environment: ${{ inputs.environment }}
     defaults:
       run:
         shell: bash
