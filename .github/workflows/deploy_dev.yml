@@ -89,7 +89,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   pre-pod_plan:
-    needs: DeployDev
+    needs: int_deploy 
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
@@ -103,7 +103,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   pre-pod_deploy:
-    needs: DeployDev
+    needs: pre-pod_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
@@ -117,7 +117,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
 
   prod_plan:
-    needs: DeployDev
+    needs: pre-pod_deploy
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
@@ -130,8 +130,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
 
-  deploy_deploy:
-    needs: DeployDev
+  prod_deploy:
+    needs: prod_plan
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
