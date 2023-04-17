@@ -47,7 +47,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick1              
+      tfbucketname : tfstate-nick1             
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
       environment: dev
@@ -62,7 +62,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1           
       tf_key: terraform-int           
       tf_vars_file: terraform.tfvars
       environment: int_deploy
@@ -77,7 +77,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick          
+      tfbucketname : tfstate-nick1          
       tf_key: terraform-int            
       tf_vars_file: terraform.tfvars
       environment: int_deploy
@@ -92,7 +92,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1              
       tf_key: terraform-preprod         
       tf_vars_file: terraform.tfvars
       environment: pre-pod
@@ -107,7 +107,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1            
       tf_key: terraform-preprod           
       tf_vars_file: terraform.tfvars
       environment: prepod
@@ -122,7 +122,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1              
       tf_key: terraform-prod           
       tf_vars_file: terraform.tfvars
       environment: prod
@@ -137,7 +137,7 @@ jobs:
     with:
       path: terraform             
       tf_version: latest 
-      tfbucketname : tfstate-nick              
+      tfbucketname : tfstate-nick1              
       tf_key: terraform-prod            
       tf_vars_file: terraform.tfvars
       environment: prod
