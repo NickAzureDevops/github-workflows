@@ -35,10 +35,10 @@ on:
         description: 'Terraform action'
         required: true
         default: 'plan'
-
+  
 jobs:  
   Plan_Dev:
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest
@@ -51,7 +51,7 @@ jobs:
 
   DeployDev:
     needs: Plan_Dev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
@@ -65,7 +65,7 @@ jobs:
 
   int_plan:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
@@ -79,7 +79,7 @@ jobs:
 
   int_deploy:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
       tf_version: latest 
@@ -93,7 +93,7 @@ jobs:
 
   pre-pod_plan:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
@@ -107,7 +107,7 @@ jobs:
 
   pre-pod_deploy:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
       tf_version: latest 
@@ -121,7 +121,7 @@ jobs:
 
   prod_plan:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
     with:
       path: terraform             
       tf_version: latest 
@@ -135,7 +135,7 @@ jobs:
 
   deploy_deploy:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
     with:
       path: terraform             
       tf_version: latest 
