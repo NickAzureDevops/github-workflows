@@ -9,7 +9,7 @@ inputs:
     type: string
     description: Name for Teraform Workspace 
   terraform_workspace_destroy:
-    type: boolean
+    type: string
     default: false
     description: Destroy all Terraform Workspace
 
