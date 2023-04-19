@@ -5,13 +5,7 @@ on:
     branches:
       - invoke-pipeline-across-repositories
   workflow_dispatch:
-    inputs:
-      env_account:
-        required: true
-        type: string      
-      environment:
-        required: true
-        type: string     
+    inputs:     
       terraform_workspace_name:
         required: false
         type: string  
