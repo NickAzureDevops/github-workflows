@@ -30,3 +30,4 @@ runs:
       terraform workspace select "${{ inputs.terraform_workspace_name }}" || terraform workspace new "${{ inputs.terraform_workspace_name }}"
       echo "WORKSPACE=${{ inputs.terraform_workspace_name }}" >> $GITHUB_ENV
     shell: bash
+  

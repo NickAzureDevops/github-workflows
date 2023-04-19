@@ -40,8 +40,7 @@ jobs:
     steps:
       - name: Terraform Destroy All workspace
         run: |
-          for i in $(terraform workspace list); do
-            terraform workspace select $i
-            terraform destroy -auto-approve
-          done
+          terraform workspace list | destroy -auto-approve
         shell: bash
+
+      
