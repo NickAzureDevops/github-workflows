@@ -1,9 +1,6 @@
 name: "Workspace Deploy"
 
 on:
-  push:
-    branches:
-      - invoke-pipeline-across-repositories
   workflow_dispatch:
     inputs:
       env_account:
@@ -46,6 +43,7 @@ jobs:
           terraform_workspace_destroy: true
       
   destroy_workspace:
+    needs: create_workspace
     runs-on: ubuntu-latest
     steps:
       - name: Terraform Destroy All workspace
