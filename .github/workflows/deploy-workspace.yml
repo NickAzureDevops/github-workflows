@@ -3,7 +3,7 @@ name: "Workspace Deploy"
 on:
   push:
     branches:
-      - invoke-pipeline-across-repositories
+      - main
   workflow_dispatch:
     inputs:
       env_account:
