@@ -1,0 +1,59 @@
+name: "Workspace Deploy"
+
+on:
+  push:
+    branches:
+      - invoke-pipeline-across-repositories
+  workflow_dispatch:
+    inputs:
+      env_account:
+        required: true
+        type: string      
+      environment:
+        required: true
+        type: string     
+      terraform_workspace_name:
+        required: false
+        type: string  
+      terraform_workspace_destroy:
+        required: true
+        type: string
+      create_workspace:
+        description: 'Create workspace'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+
+env: 
+  terraform_actions_working_dir: ${{ github.workspace }}/terraform/
+
+jobs:
+  create_workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: TF workspace
+        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
+        if: ${{ inputs.create_workspace }}
+        with:
+          terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
+          terraform_version: 1.3.7
+          terraform_workspace_destroy: true
+      
+  destroy_workspace:
+    needs: create_workspace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Terraform Destroy All workspace
+        run: |
+          for i in $(terraform workspace list); do
+          terraform workspace select $i
+          terraform destroy -auto-approve
+          done
+        shell: bash
+    
