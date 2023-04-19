@@ -1,7 +1,7 @@
 name: "Workspce Deploy"
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       env_account:
         required: true
@@ -12,9 +12,6 @@ on:
       terraform_workspace_name:
         required: false
         type: string    
-    secrets:
-      GH_TOKEN:
-        required: true
 
 permissions:
   id-token: write
