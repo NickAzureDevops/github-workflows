@@ -12,11 +12,6 @@ on:
       terraform_workspace_destroy:
         required: true
         type: string
-      create_workspace:
-        description: 'Create workspace'
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   id-token: write
@@ -33,7 +28,7 @@ jobs:
       
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
-        if: ${{ inputs.create_workspace }}
+        if: ${{ inputs.terraform_workspace_name }}
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
