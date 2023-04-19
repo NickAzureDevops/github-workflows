@@ -13,7 +13,7 @@ on:
         required: false
         type: string  
       destroy_workspace:
-        required: false
+        required: true
         type: string
       create_workspace:
         required: false
