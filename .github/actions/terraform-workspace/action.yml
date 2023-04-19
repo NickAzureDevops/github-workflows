@@ -7,11 +7,11 @@ inputs:
     description: Terraform Version to install on runner
   terraform_workspace_name:
     type: string
-    description: Name for Teraform Workspace e.g dev01 or uat01
+    description: Name for Teraform Workspace 
   destroy_workspace:
-    type: string
+    type: boolean
     default: false
-    description: Destroy all Terraform Workspaces
+    description: Destroy all Terraform Workspace
 
 runs:
   using: 'composite'

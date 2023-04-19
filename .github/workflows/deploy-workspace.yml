@@ -15,6 +15,9 @@ on:
       destroy_workspace:
         required: false
         type: string
+      create_workspace:
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -28,17 +31,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-         
+
+        if: ${{ inputs.create_workspace == true }} 
+      - name: Create Workspace tfvars
+        run: |
+          cp ./etc/terraform.tfvars ./etc/${{ env.WORKSPACE }}.tfvars   
+       
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
           destroy_workspace: ${{ inputs.destroy_workspace }}
-
-      - name: Create Workspace tfvars
-        run: |
-          cp ./etc/terraform.tfvars ./etc/${{ env.WORKSPACE }}.tfvars   
-        
 
       
