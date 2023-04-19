@@ -8,7 +8,7 @@ inputs:
   terraform_workspace_name:
     type: string
     description: Name for Teraform Workspace 
-  destroy_workspace:
+  terraform_workspace_destroy:
     type: boolean
     default: false
     description: Destroy all Terraform Workspace
@@ -36,7 +36,7 @@ runs:
     shell: bash
 
   - name: Terraform Destroy All workspace
-    if: ${{ inputs.destroy_workspace == true }} 
+    if: ${{ inputs.terraform_workspace_destroy == true }} 
     run: |
       for i in $(terraform workspace list); do
       terraform workspace select $i
