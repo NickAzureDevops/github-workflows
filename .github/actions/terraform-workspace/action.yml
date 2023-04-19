@@ -34,12 +34,3 @@ runs:
       terraform workspace select "${{ inputs.terraform_workspace_name }}" || terraform workspace new "${{ inputs.terraform_workspace_name }}"
       echo "WORKSPACE=${{ inputs.terraform_workspace_name }}" >> $GITHUB_ENV
     shell: bash
-
-  - name: Terraform Destroy All workspace
-    if: ${{ inputs.terraform_workspace_destroy == true }} 
-    run: |
-      for i in $(terraform workspace list); do
-      terraform workspace select $i
-      terraform destroy -auto-approve
-      done
-    shell: bash
