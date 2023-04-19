@@ -1,9 +1,6 @@
 name: "Workspace Deploy"
 
 on:
-  push:
-    branches:
-      - invoke-pipeline-across-repositories
   workflow_dispatch:
     inputs:
       env_account:
@@ -14,7 +11,10 @@ on:
         type: string     
       terraform_workspace_name:
         required: false
-        type: string    
+        type: string  
+      destroy_workspace:
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -34,8 +34,11 @@ jobs:
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
+          destroy_workspace: ${{ inputs.destroy_workspace }}
 
       - name: Create Workspace tfvars
         run: |
           cp ./etc/terraform.tfvars ./etc/${{ env.WORKSPACE }}.tfvars   
         
+
+      

@@ -8,6 +8,10 @@ inputs:
   terraform_workspace_name:
     type: string
     description: Name for Teraform Workspace e.g dev01 or uat01
+  destroy_workspace:
+    type: string
+    default: false
+    description: Destroy all Terraform Workspaces
 
 runs:
   using: 'composite'
@@ -32,8 +36,10 @@ runs:
     shell: bash
 
   - name: Terraform Destroy All workspace
-    if: ${{ inputs.terraform_workspace_name != null }}
+    if: ${{ inputs.destroy_workspace == true }} 
     run: |
-      terraform workspace select "${{ inputs.terraform_workspace_name }}"
+      for i in $(terraform workspace list); do
+      terraform workspace select $i
       terraform destroy -auto-approve
+      done
     shell: bash
