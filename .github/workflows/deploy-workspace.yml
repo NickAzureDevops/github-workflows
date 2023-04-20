@@ -44,6 +44,7 @@ jobs:
         shell: bash
 
   Plan_Dev:
+    needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     with:
       path: terraform             
