@@ -12,6 +12,14 @@ on:
       terraform_workspace_destroy:
         required: false
         type: boolean
+      tf_plan:
+        required: false
+        type: string
+        default: 'plan'
+      tf_apply:
+        required: false
+        type: string
+        default: 'apply'
 
 permissions:
   id-token: write
@@ -47,6 +55,7 @@ jobs:
   Plan_Dev:
     needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    if: ${{ inputs.tf_plan }}
     with:
       path: terraform             
       tf_version: latest
@@ -60,6 +69,7 @@ jobs:
   DeployDev:
     needs: Plan_Dev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
+    if : ${{ inputs.tf_apply }}
     with:
       path: terraform             
       tf_version: latest 
