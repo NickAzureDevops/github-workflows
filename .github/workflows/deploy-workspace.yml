@@ -35,6 +35,7 @@ jobs:
           terraform_workspace_destroy: true
       
   destroy_workspace:
+    if: ${{ inputs.terraform_workspace_destroy }}
     needs: create_workspace
     runs-on: ubuntu-latest
     steps:
