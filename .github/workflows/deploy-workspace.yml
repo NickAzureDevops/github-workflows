@@ -14,12 +14,11 @@ on:
         type: boolean
       tf_plan:
         required: false
-        type: string
-        default: 'plan'
+        type: boolean
       tf_apply:
         required: false
-        type: string
-        default: 'apply'
+        type: boolean
+
 
 permissions:
   id-token: write
