@@ -10,8 +10,8 @@ on:
         required: false
         type: string  
       terraform_workspace_destroy:
-        required: true
-        type: string
+        required: false
+        type: boolean
 
 permissions:
   id-token: write
