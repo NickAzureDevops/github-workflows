@@ -43,4 +43,28 @@ jobs:
           terraform workspace list || terraform workspace select {} && terraform destroy -auto-approve
         shell: bash
 
+  Plan_Dev:
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
+    with:
+      path: terraform             
+      tf_version: latest
+      tfbucketname : tfstate-nick1       
+      tf_key: terraform-dev          
+      tf_vars_file: terraform.tfvars
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
       
+  DeployDev:
+    needs: Plan_Dev
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
+    with:
+      path: terraform             
+      tf_version: latest 
+      tfbucketname : tfstate-nick1              
+      tf_key: terraform-dev            
+      tf_vars_file: terraform.tfvars
+      tf_environment: dev
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
