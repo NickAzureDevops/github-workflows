@@ -76,7 +76,7 @@ jobs:
       
       - name: Create Workspace tfvars
         run: |
-          cp ../etc/terraform.tfvars ../etc/${{ env.WORKSPACE }}.tfvars       
+          cp ./etc/terraform.tfvars ./etc/terraform${{ env.WORKSPACE }}.tfvars       
 
       - name: Terraform Init
         id: init
