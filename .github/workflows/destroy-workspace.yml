@@ -1,4 +1,4 @@
-name: "Workspace Deploy"
+name: "destroy_Workspace"
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Destroy All Terraform Workspace 
         if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
         run: |
