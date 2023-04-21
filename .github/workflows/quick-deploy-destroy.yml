@@ -29,5 +29,6 @@ jobs:
       - name: Destroy All Terraform Workspace 
         if: ${{ inputs.terraform_workspace_name }} 
         run: |
-            terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+            for i in $(terraform workspace list); do terraform workspace select $i; terraform destroy -auto-approve; 
+            done
         shell: bash
