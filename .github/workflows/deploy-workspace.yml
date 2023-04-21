@@ -19,7 +19,6 @@ on:
         required: false
         type: boolean
 
-
 permissions:
   id-token: write
   contents: read
@@ -79,3 +78,5 @@ jobs:
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+
+      
