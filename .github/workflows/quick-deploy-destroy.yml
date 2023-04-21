@@ -37,12 +37,9 @@ jobs:
     #       TF_WORKING_DIR: ${{ env.terraform_actions_working_dir }}
     #       TF_ACTION_WORKSPACE_NAME: ${{ github.event.inputs.terraform_workspace_name }}
 
-      - name: Destroy All Terraform Workspace 
+      - name: ls
         run: |
-            for i in $(terraform workspace list); 
-            do 
-            terraform workspace select $i; terraform destroy -auto-approve;
-            done
+            terraform workspace list
         shell: bash
         env: 
           TF_WORKING_DIR: ${{ env.terraform_actions_working_dir }}
