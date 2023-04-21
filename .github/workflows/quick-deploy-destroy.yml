@@ -40,7 +40,7 @@ jobs:
 
       - name: ls
         run: |
-            terraform workspace list
+            terraform workspace list --state ${{ env.tf_workspace }}
         shell: bash
         env: 
             tf_workspace : ${{ env.tf_workspace }}
