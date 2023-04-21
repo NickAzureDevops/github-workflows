@@ -45,10 +45,13 @@ jobs:
     needs: create_workspace
     runs-on: ubuntu-latest
     steps:
-      - name: Terraform Destroy All workspace
-        run: |
-          terraform workspace list || terraform workspace select {} && terraform destroy -auto-approve
-        shell: bash
+      - name: Destroy All Terraform Workspace 
+      if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
+      run: |
+        terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+      shell: bash
+  
+  
 
   Plan_Dev:
     needs: create_workspace
@@ -79,4 +82,3 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
-      
