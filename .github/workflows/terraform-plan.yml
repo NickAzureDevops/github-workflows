@@ -75,17 +75,14 @@ jobs:
           terraform_workspace_destroy: true
       
       - name: Create Workspace tfvars
-        if: contains(inputs.quick_deploy, 'true') 
         run: |
           cp ./etc/terraform.tfvars ./etc/${{ env.WORKSPACE }}.tfvars       
 
       - name: Terraform Init
-        if: contains(inputs.quick_deploy, 'true') 
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
       
       - name: Terraform Plan
-        if: contains(inputs.quick_deploy, 'true') 
         id: plan
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true

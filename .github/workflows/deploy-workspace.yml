@@ -26,14 +26,7 @@ env:
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
 
 jobs:
-  create_workspace:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-       
-
   Plan_Dev:
-    needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     if: contains(inputs.quick_deploy, 'true') 
     with:
