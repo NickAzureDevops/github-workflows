@@ -12,12 +12,6 @@ on:
       terraform_workspace_destroy:
         required: false
         type: boolean
-      tf_plan:
-        required: false
-        type: boolean
-      tf_apply:
-        required: false
-        type: boolean
       create_workspace:
         required: false
         type: boolean
@@ -49,7 +43,6 @@ jobs:
   Plan_Dev:
     needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
-    if: ${{ inputs.tf_plan }}
     with:
       path: terraform             
       tf_version: latest
@@ -64,7 +57,6 @@ jobs:
   DeployDev:
     needs: Plan_Dev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
-    if : ${{ inputs.tf_apply }}
     with:
       path: terraform             
       tf_version: latest 
