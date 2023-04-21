@@ -68,7 +68,6 @@ jobs:
 
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
-        if: contains(inputs.quick_deploy, 'true') 
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
