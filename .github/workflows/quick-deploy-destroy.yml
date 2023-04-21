@@ -19,6 +19,7 @@ permissions:
 
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
+  tf_workspace: /home/runner/work/_temp/
 
 jobs:
   quick_deploy_destroy:
@@ -42,6 +43,4 @@ jobs:
             terraform workspace list
         shell: bash
         env: 
-          TF_WORKING_DIR: ${{ env.terraform_actions_working_dir }}
-          TF_ACTION_WORKSPACE_NAME: ${{ github.event.inputs.terraform_workspace_name }}
-
+            tf_workspace : ${{ env.tf_workspace }}
