@@ -39,16 +39,11 @@ jobs:
           terraform_version: 1.3.7
           terraform_workspace_destroy: true
       
-  destroy_workspace:
-    if: ${{ inputs.quick_deploy }}
-    needs: create_workspace
-    runs-on: ubuntu-latest
-    steps:
-      - name: Destroy All Terraform Workspace 
-        if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
+      - name: Create Workspace tfvars
+        if: contains(inputs.quick_deploy, 'true') 
         run: |
-          terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
-        shell: bash
+          cp ./etc/terraformtfvars ./etc/${{ env.WORKSPACE }}.tfvars       
+
   
   Plan_Dev:
     needs: create_workspace
@@ -60,9 +55,9 @@ jobs:
       tf_version: latest
       tfbucketname : tfstate-nick1       
       tf_key: terraform-dev          
-      tf_vars_file: terraform.tfvars
+      tf_vars_file: ../dev/terraform.tfvars
+      quick_deploy: "--var-file=../var/terraform.tfvars"
       environment: dev
-
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
@@ -76,7 +71,7 @@ jobs:
       tf_version: latest 
       tfbucketname : tfstate-nick1              
       tf_key: terraform-dev            
-      tf_vars_file: terraform.tfvars
+      tf_vars_file: ../dev/terraform.tfvars
       environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            

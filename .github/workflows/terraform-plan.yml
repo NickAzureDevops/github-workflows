@@ -65,39 +65,27 @@ jobs:
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: ${{ inputs.tf_version }}
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
 
       - name: Terraform Format
         id: fmt
         run: terraform fmt --check
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
 
       - name: Terraform Init
         if: contains(inputs.quick_deploy, 'true') 
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
       
       - name: Terraform Validate
         if: contains(inputs.quick_deploy, 'true') 
         id: validate
         run: terraform validate
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
 
       - name: Terraform Plan
         if: contains(inputs.quick_deploy, 'true') 
         id: plan
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-        env: 
-          TF_WORKSPACE: ${{ inputs.terraform_workspace_name }}
