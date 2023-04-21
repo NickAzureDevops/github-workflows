@@ -11,7 +11,7 @@ on:
     inputs:
       terraform_workspace_name:
         description: 'Terraform Workspace Name'
-        required: true
+        required: false
 
 permissions:
   id-token: write
