@@ -25,13 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        
-      - name: AWS Authentication
-        uses: dvsa/.github/.github/actions/aws-auth@main
-        with:
-          aws_role: dvsamot-recalls-infra-github
-          aws_region: eu-west-1
-          aws_account_id: 769086804114
 
       - name: Destroy All Terraform Workspace 
         if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
