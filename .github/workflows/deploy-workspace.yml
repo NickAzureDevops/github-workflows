@@ -9,6 +9,9 @@ on:
       terraform_workspace_destroy:
         required: false
         type: boolean
+      quick_deploy:
+        required: false
+        type: string
 
 permissions:
   id-token: write
@@ -24,6 +27,7 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: TF workspace
+        if: contains(inputs.quick_deploy, 'true') 
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
@@ -31,12 +35,14 @@ jobs:
           terraform_workspace_destroy: true
         
       - name: Create Workspace tfvars
+        if: contains(inputs.quick_deploy, 'true') 
         run: |
           cp ./etc/terraform.tfvars ./etc/terraform${{ env.WORKSPACE }}.tfvars
           
   Plan_Dev:
     needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: contains(inputs.quick_deploy, 'true') 
     with:
       path: terraform             
       tf_version: latest
@@ -51,6 +57,7 @@ jobs:
   DeployDev:
     needs: Plan_Dev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: contains(inputs.quick_deploy, 'true') 
     with:
       path: terraform             
       tf_version: latest 
