@@ -9,9 +9,6 @@ on:
       terraform_workspace_destroy:
         required: false
         type: boolean
-      create_workspace:
-        required: false
-        type: boolean
 
 permissions:
   id-token: write
