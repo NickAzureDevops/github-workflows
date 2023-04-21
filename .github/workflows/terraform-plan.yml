@@ -19,7 +19,7 @@ on:
         description: 'Specifies the Terraform state file name for this plan. Workflow artifact will use same name'
         required: true
         type: string
-      tf_environment:
+      environment:
         description: 'Specifies the GitHub deployment environment.'
         required: false
         type: string
@@ -28,6 +28,12 @@ on:
         description: 'Specifies the Terraform tfvars.'
         required: true
         type: string
+      quick_deploy_terraform_args:
+        required: false
+        type: string
+      terraform_workspace_name:
+        required: true
+        type: string    
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
@@ -39,7 +45,7 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.tf_environment }}
+    environment: ${{ inputs.environment }}
     defaults:
       run:
         shell: bash
@@ -65,16 +71,19 @@ jobs:
         run: terraform fmt --check
 
       - name: Terraform Init
+          if ${{ inputs.terraform_workspace_name }}
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
       
       - name: Terraform Validate
+          if ${{ inputs.terraform_workspace_name }}
         id: validate
         run: terraform validate
 
       - name: Terraform Plan
+          if ${{ inputs.terraform_workspace_name }}
         id: plan
-        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true
 
       - name: Terraform Plan Status
