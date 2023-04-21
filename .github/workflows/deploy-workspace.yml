@@ -46,13 +46,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Destroy All Terraform Workspace 
-      if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
-      run: |
-        terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
-      shell: bash
+        if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
+        run: |
+          terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+        shell: bash
   
   
-
   Plan_Dev:
     needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
