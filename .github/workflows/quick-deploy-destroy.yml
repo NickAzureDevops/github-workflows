@@ -1,4 +1,4 @@
-name: "workspace destroy"
+name: "Destroy workspace"
 
 on:
   push:
@@ -26,10 +26,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+    #   - name: Destroy All Terraform Workspace 
+    #     run: |
+    #         for i in $(terraform workspace list); 
+    #         do 
+    #         terraform workspace select $i; terraform destroy -auto-approve;
+    #         done
+    #     shell: bash
+    #     env: 
+    #       TF_WORKING_DIR: ${{ env.terraform_actions_working_dir }}
+    #       TF_ACTION_WORKSPACE_NAME: ${{ github.event.inputs.terraform_workspace_name }}
+
       - name: Destroy All Terraform Workspace 
         run: |
             for i in $(terraform workspace list); 
             do 
-            terraform workspace select $i; terraform destroy -auto-approve; 
+            terraform workspace select $i; terraform destroy -auto-approve;
             done
         shell: bash
+        env: 
+          TF_WORKING_DIR: ${{ env.terraform_actions_working_dir }}
+          TF_ACTION_WORKSPACE_NAME: ${{ github.event.inputs.terraform_workspace_name }}
+
