@@ -8,7 +8,7 @@ resource "aws_instance" "app_server" {
 }
 
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = format("test_bucket-%s", var.location)
+  bucket = format("test-bucket-%s", var.location)
 
   tags = {
     Name        = "test"
