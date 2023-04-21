@@ -42,18 +42,18 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
       
-  DeployDev:
-    needs: Plan_Dev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
-    if: contains(inputs.quick_deploy, 'true') 
-    with:
-      path: terraform             
-      tf_version: latest 
-      tfbucketname : tfstate-nick1              
-      tf_key: terraform-dev            
-      tf_vars_file: ../etc/terraform.tfvars
-      environment: dev
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+  # DeployDev:
+  #   needs: Plan_Dev
+  #   uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
+  #   if: contains(inputs.quick_deploy, 'true') 
+  #   with:
+  #     path: terraform             
+  #     tf_version: latest 
+  #     tfbucketname : tfstate-nick1              
+  #     tf_key: terraform-dev            
+  #     tf_vars_file: ../etc/terraform.tfvars
+  #     environment: dev
+  #   secrets:
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 

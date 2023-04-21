@@ -89,3 +89,13 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/main'
+        run: terraform apply plan.tfplan
+      
+      - name: Download TF Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.tf_key }}
+          path: "${{ inputs.path }}/plan.tfplan"
