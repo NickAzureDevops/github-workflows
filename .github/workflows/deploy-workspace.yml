@@ -42,7 +42,7 @@ jobs:
       - name: Create Workspace tfvars
         if: contains(inputs.quick_deploy, 'true') 
         run: |
-          cp ./etc/terraformtfvars ./etc/${{ env.WORKSPACE }}.tfvars       
+          cp ./etc/terraform.tfvars ./etc/${{ env.WORKSPACE }}.tfvars       
 
   
   Plan_Dev:
