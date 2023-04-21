@@ -39,7 +39,7 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.tf_environment }}
+    environment: ${{ inputs.environment }}
     defaults:
       run:
         shell: bash

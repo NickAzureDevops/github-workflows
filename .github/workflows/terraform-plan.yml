@@ -21,14 +21,14 @@ on:
         type: string
       environment:
         description: 'Specifies the GitHub deployment environment.'
-        required: false
+        required: true
         type: string
         default: null
       tf_vars_file:
         description: 'Specifies the Terraform tfvars.'
         required: true
         type: string
-      quick_deploy_terraform_args:
+      quick_deploy:
         required: false
         type: string
       terraform_workspace_name:
@@ -71,17 +71,17 @@ jobs:
         run: terraform fmt --check
 
       - name: Terraform Init
-          if ${{ inputs.terraform_workspace_name }}
+        if: contains(inputs.quick_deploy, 'true') 
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
       
       - name: Terraform Validate
-          if ${{ inputs.terraform_workspace_name }}
+        if: contains(inputs.quick_deploy, 'true') 
         id: validate
         run: terraform validate
 
       - name: Terraform Plan
-          if ${{ inputs.terraform_workspace_name }}
+        if: contains(inputs.quick_deploy, 'true') 
         id: plan
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true

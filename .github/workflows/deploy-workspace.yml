@@ -12,12 +12,9 @@ on:
       terraform_workspace_destroy:
         required: false
         type: boolean
-      tf_plan:
+      quick_deploy:
         required: false
-        type: boolean
-      tf_apply:
-        required: false
-        type: boolean
+        type: string
 
 permissions:
   id-token: write
@@ -34,14 +31,14 @@ jobs:
       
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
-        if: ${{ inputs.terraform_workspace_name }}
+        if: contains(inputs.quick_deploy, 'true') 
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
           terraform_workspace_destroy: true
       
   destroy_workspace:
-    if: ${{ inputs.terraform_workspace_destroy }}
+    if: ${{ inputs.quick_deploy }}
     needs: create_workspace
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +51,7 @@ jobs:
   Plan_Dev:
     needs: create_workspace
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
-    if: ${{ inputs.tf_plan }}
+    if: contains(inputs.quick_deploy, 'true') 
     with:
       path: terraform    
       terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
@@ -71,14 +68,14 @@ jobs:
   DeployDev:
     needs: Plan_Dev
     uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@main
-    if : ${{ inputs.tf_apply }}
+    if: contains(inputs.quick_deploy, 'true') 
     with:
       path: terraform             
       tf_version: latest 
       tfbucketname : tfstate-nick1              
       tf_key: terraform-dev            
       tf_vars_file: terraform.tfvars
-      tf_environment: dev
+      environment: dev
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
