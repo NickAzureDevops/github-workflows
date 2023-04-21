@@ -15,3 +15,12 @@ resource "aws_s3_bucket" "s3_bucket" {
     Environment = "Dev"
   }
 }
+
+resource "aws_s3_bucket" "s3_bucket1" {
+  bucket = format("test2-bucket2-%s", var.location)
+
+  tags = {
+    Name        = "test"
+    Environment = "Dev"
+  }
+}
