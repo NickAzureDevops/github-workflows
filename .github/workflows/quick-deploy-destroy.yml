@@ -1,4 +1,4 @@
-name: "Environment Deploy"
+name: "workspace destroy"
 
 on:
   push:
