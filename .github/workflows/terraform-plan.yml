@@ -66,6 +66,18 @@ jobs:
         with:
           terraform_version: ${{ inputs.tf_version }}
 
+      - name: TF workspace
+        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
+        if: contains(inputs.quick_deploy, 'true') 
+        with:
+          terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
+          terraform_version: 1.3.7
+          terraform_workspace_destroy: true
+      
+      - name: Create Workspace tfvars
+        run: |
+          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars       
+
       - name: Terraform Init
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
