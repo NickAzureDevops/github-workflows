@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Destroy All Terraform Workspace 
-        if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
+        if: ${{ inputs.terraform_workspace_name }} 
         run: |
             terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
         shell: bash
