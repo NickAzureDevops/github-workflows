@@ -5,23 +5,21 @@ on:
     branches:
       - invoke-pipeline-across-repositories
   workflow_dispatch:
-    inputs:
-      env_account:
-        required: true
-        type: string      
-      environment:
-        required: true
-        type: string     
+    inputs:     
       terraform_workspace_name:
         required: false
         type: string  
       terraform_workspace_destroy:
-        required: true
-        type: string
+        required: false
+        type: boolean
+      tf_plan:
+        required: false
+        type: boolean
+      tf_apply:
+        required: false
+        type: boolean
       create_workspace:
-        description: 'Create workspace'
-        required: true
-        default: false
+        required: false
         type: boolean
 
 permissions:
@@ -39,21 +37,41 @@ jobs:
       
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
-        if: ${{ inputs.create_workspace }}
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
           terraform_workspace_destroy: true
-      
-  destroy_workspace:
-    needs: create_workspace
-    runs-on: ubuntu-latest
-    steps:
-      - name: Terraform Destroy All workspace
+        
+      - name: Create Workspace tfvars
         run: |
-          for i in $(terraform workspace list); do
-          terraform workspace select $i
-          terraform destroy -auto-approve
-          done
-        shell: bash
+          cp ./etc/terraform.tfvars ./etc/terraform${{ env.WORKSPACE }}.tfvars
+          
+  Plan_Dev:
+    needs: create_workspace
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if: ${{ inputs.tf_plan }}
+    with:
+      path: terraform             
+      tf_version: latest
+      tfbucketname : tfstate-nick1       
+      tf_key: terraform-dev          
+      tf_vars_file: terraform.tfvars
+      environment: dev
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}         
     
+  DeployDev:
+    needs: Plan_Dev
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    if : ${{ inputs.tf_apply }}
+    with:
+      path: terraform             
+      tf_version: latest 
+      tfbucketname : tfstate-nick1              
+      tf_key: terraform-dev            
+      tf_vars_file: terraform.tfvars
+      environment: dev
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     

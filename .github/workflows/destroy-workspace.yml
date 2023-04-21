@@ -1,0 +1,40 @@
+name: "Workspace Deploy"
+
+on:
+  push:
+    branches:
+      - invoke-pipeline-across-repositories
+  workflow_dispatch:
+    inputs: 
+      terraform_workspace_name:
+        required: false
+        type: string  
+      terraform_workspace_destroy:
+        required: true
+        type: string
+      create_workspace:
+        description: 'Create workspace'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write
+  contents: read
+
+env: 
+  terraform_actions_working_dir: ${{ github.workspace }}/terraform/
+
+jobs:
+  create_workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Destroy All Terraform Workspace 
+        if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
+        run: |
+            terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+        shell: bash
+
+        
