@@ -12,6 +12,7 @@ on:
       quick_deploy:
         required: false
         type: string
+        default: false
 
 permissions:
   id-token: write
