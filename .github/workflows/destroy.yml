@@ -38,8 +38,6 @@ jobs:
           role-to-assume: arn:aws:iam::123456789100:role/my-github-actions-role
           aws-region: eu-west-2
 
-        
-
       - name: Destroy All Terraform Workspace 
         run: |
             terraform workspace list 
