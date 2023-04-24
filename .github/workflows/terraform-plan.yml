@@ -28,6 +28,10 @@ on:
         description: 'Specifies the Terraform tfvars.'
         required: true
         type: string
+      terraform_workspace_name:
+        description: 'Specifies the Terraform workspace name.'
+        required: true
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
