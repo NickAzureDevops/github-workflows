@@ -42,5 +42,5 @@ jobs:
       - name: Destroy All Terraform Workspace 
         run: |
             terraform workspace list 
-            | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+            # | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
         shell: bash
