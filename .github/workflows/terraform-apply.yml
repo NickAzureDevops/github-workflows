@@ -1,4 +1,4 @@
-name: "build_plan"
+name: "build_apply"
 on:
   workflow_call:
     inputs:
@@ -21,28 +21,14 @@ on:
         type: string
       environment:
         description: 'Specifies the GitHub deployment environment.'
-        required: true
+        required: false
         type: string
         default: null
       tf_vars_file:
         description: 'Specifies the Terraform tfvars.'
         required: true
         type: string
-      terraform_workspace_name:
-        description: 'Specifies the Terraform workspace name.'
-        required: true
-        type: string
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        description: 'AWS Access Key ID'
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        description: 'AWS Secret Access Key'
-        required: true
-
-env: 
-  terraform_actions_working_dir: ${{ github.workspace }}/terraform/
-
+        
 jobs:
   build-plan:
     runs-on: ubuntu-latest
@@ -56,27 +42,14 @@ jobs:
       TF_KEY: ${{ inputs.tf_key }}.tfstate
       TF_VARS: ${{ inputs.tf_vars_file }}
   
-    steps:
+    steps:    
       - name: Checkout
         uses: actions/checkout@v3.3.0
-      
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: ${{ inputs.tf_version }}
-
-      - name: TF workspace
-        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
-        with:
-          terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
-          terraform_version: 1.3.7
 
       - name: Terraform Init
         id: init
@@ -84,11 +57,15 @@ jobs:
       
       - name: Terraform Plan
         id: plan
-        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan
         continue-on-error: true
-
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
-
+    
+      - name: Terraform Apply
+        # if: github.ref == 'refs/heads/main'
+        run: terraform apply plan.tfplan
       
+      - name: Download TF Plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ inputs.tf_key }}
+          path: "${{ inputs.path }}/plan.tfplan"

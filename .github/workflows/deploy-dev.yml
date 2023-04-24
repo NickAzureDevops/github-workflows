@@ -27,7 +27,7 @@ on:
 jobs:
 
   Plan_Dev:
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     if: ${{ inputs.dev_deploy }}
     with:
       path: terraform             
@@ -42,7 +42,7 @@ jobs:
 
   DeployDev:
     needs: Plan_Dev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-apply.yml@main
     if: ${{ inputs.dev_deploy }}
     with:
       path: terraform             
@@ -57,7 +57,7 @@ jobs:
 
   int_plan:
     needs: DeployDev
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     if: ${{ inputs.int_deploy }}
     with:
       path: terraform             
@@ -72,7 +72,7 @@ jobs:
 
   int_deploy:
     needs: int_plan
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-apply.yml@main
     if: ${{ inputs.int_deploy }}
     with:
       path: terraform             
@@ -87,7 +87,7 @@ jobs:
 
   pre-pod_plan:
     needs: int_deploy 
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     if: ${{ inputs.preprod_deploy }}
     with:
       path: terraform             
@@ -102,7 +102,7 @@ jobs:
 
   pre-pod_deploy:
     needs: pre-pod_plan
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-apply.yml@main
     if: ${{ inputs.preprod_deploy }}
     with:
       path: terraform             
@@ -117,7 +117,7 @@ jobs:
 
   prod_plan:
     needs: pre-pod_deploy
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@invoke-pipeline-across-repositories
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-plan.yml@main
     if: ${{ inputs.prod_deploy }}
     with:
       path: terraform             
@@ -132,7 +132,7 @@ jobs:
 
   prod_deploy:
     needs: prod_plan
-    uses: NickAzureDevops/github-workflows/.github/workflows/terraform_apply.yml@invoke-pipeline-across-repositories 
+    uses: NickAzureDevops/github-workflows/.github/workflows/terraform-apply.yml@main
     if: ${{ inputs.prod_deploy }}
     with:
       path: terraform             
