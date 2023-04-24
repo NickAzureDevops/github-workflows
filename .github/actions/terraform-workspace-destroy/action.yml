@@ -22,5 +22,5 @@ runs:
     run: |
       terraform workspace select "${{ github.actor }}" 
       terraform workspace list | grep -v default | terraform workspace delete
-      echo "WORKSPACE=${{ github.actor }}" >> $GITHUB_ENV
+      echo "All workspaces deleted"
     shell: bash
