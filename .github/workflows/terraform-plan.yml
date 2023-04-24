@@ -32,13 +32,6 @@ on:
         description: 'Specifies the Terraform workspace name.'
         required: true
         type: string
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        description: 'AWS Access Key ID.'
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        description: 'AWS Secret Access Key.'
-        required: true
 
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
