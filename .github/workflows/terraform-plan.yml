@@ -30,10 +30,7 @@ on:
         type: string
       quick_deploy:
         required: false
-        type: string
-      terraform_workspace_name:
-        required: true
-        type: string    
+        type: string  
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
@@ -41,6 +38,9 @@ on:
       AWS_SECRET_ACCESS_KEY:
         description: 'AWS Secret Access Key.'
         required: true
+
+env: 
+  terraform_actions_working_dir: ${{ github.workspace }}/terraform/
 
 jobs:
   build-plan:
