@@ -12,7 +12,7 @@ on:
         default: 'dev'
       terraform_workspace_name:
         description: 'Terraform Workspace Name'
-        required: true
+        required: false
         default: 'dev'
 
 permissions:
@@ -37,7 +37,7 @@ jobs:
           aws-region: eu-west-2
 
       - name: destroy all terraform workspace 
-        if: ${{ inputs.terraform_workspace_name == null }} 
+        if: ${{ inputs.terraform_workspace_name == null }}
         run: |
           terraform workspace select "${{ github.actor }}" 
           terraform workspace list | grep -v default | xargs -n 1 terraform workspace select 
