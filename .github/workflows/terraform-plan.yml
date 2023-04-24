@@ -28,9 +28,6 @@ on:
         description: 'Specifies the Terraform tfvars.'
         required: true
         type: string
-      quick_deploy:
-        required: false
-        type: string  
     secrets:
       AWS_ACCESS_KEY_ID:
         description: 'AWS Access Key ID.'
