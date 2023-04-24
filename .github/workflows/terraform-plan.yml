@@ -73,7 +73,7 @@ jobs:
           terraform_version: ${{ inputs.tf_version }}
 
       - name: TF workspace
-        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@invoke-pipeline-across-repositories
+        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
