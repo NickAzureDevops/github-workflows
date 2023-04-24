@@ -1,6 +1,10 @@
 name: "Destroy workspace"
 
 on:
+  push:
+    branches:
+      - main
+
 #   schedule:
      # Runs "At 20:00 on every day-of-week from Monday through Friday"
     # - cron: '0 20 * * 1-5'   
@@ -36,7 +40,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-      - name: TF workspace
+      - name: Destroy TF Workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace-destroy@main
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
