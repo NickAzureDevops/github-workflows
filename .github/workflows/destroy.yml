@@ -3,7 +3,7 @@ name: "Environment Deploy"
 on:
   push:
     branches:
-    - CICD-implement-workspace-in-quick-deploy-workflow_1
+    - main
 #   schedule:
      # Runs "At 20:00 on every day-of-week from Monday through Friday"
     # - cron: '0 20 * * 1-5'   
