@@ -1,4 +1,4 @@
-name: Terraform Workspace
+name: Terraform Destroy Workspace
 
 inputs:
   terraform_version:
