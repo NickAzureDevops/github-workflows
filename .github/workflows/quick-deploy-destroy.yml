@@ -36,10 +36,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-      - name: destroy all terraform workspace 
-        if: ${{ inputs.terraform_workspace_name == null }}
-        run: |
-          terraform workspace select "${{ github.actor }}" 
-          terraform workspace list | grep -v default | xargs -n 1 terraform workspace select 
-          terraform workspace list | grep -v default | xargs -n 1 terraform workspace delete 
-        shell: bash
+      - name: TF workspace
+        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace-destroy@main
+        with:
+          terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
+          terraform_version: 0.14.7
