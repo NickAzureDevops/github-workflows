@@ -100,3 +100,12 @@ jobs:
         with:
           name: ${{ inputs.tf_key }}
           path: "${{ inputs.path }}/plan.tfplan"
+      
+      - name: destroy all terraform workspace 
+        if: ${{ inputs.terraform_workspace_name == null }} 
+        run: |
+          terraform workspace select "${{ github.actor }}" || terraform workspace delete "${{ github.actor }}"
+          terraform workspace select "${{ inputs.terraform_workspace_name }}" || terraform workspace delete  "${{ inputs.terraform_workspace_name }}"
+          echo "WORKSPACE=${{ github.actor }}" >> $GITHUB_ENV 
+          echo "WORKSPACE=${{ inputs.terraform_workspace_name }}" >> $GITHUB_ENV 
+        shell: bash
