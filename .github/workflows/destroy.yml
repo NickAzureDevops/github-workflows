@@ -10,13 +10,13 @@ on:
   workflow_dispatch:
     inputs:
         group:
-            description: 'Environment Group'
-            required: true
-            default: 'dev'
+          description: 'Environment Group'
+          required: true
+          default: 'dev'
         terraform_workspace_name:
-            description: 'Terraform Workspace Name'
-            required: true
-            default: 'dev'
+          description: 'Terraform Workspace Name'
+          required: true
+          default: 'dev'
 
 permissions:
   id-token: write
@@ -40,7 +40,6 @@ jobs:
       #     aws_account_id: 769086804114
 
       - name: Destroy All Terraform Workspace 
-        if: ${{ inputs.terraform_workspace_name == 'destroy' }} 
         run: |
             terraform workspace list | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
         shell: bash
