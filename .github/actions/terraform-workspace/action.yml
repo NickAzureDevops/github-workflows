@@ -31,3 +31,10 @@ runs:
       echo "WORKSPACE=${{ inputs.terraform_workspace_name }}" >> $GITHUB_ENV
     shell: bash
   
+  - name: destroy all terraform workspace 
+    if: ${{ inputs.terraform_workspace_name == null }} 
+    run: |
+      terraform workspace select "${{ github.actor }}" 
+      terraform workspace list | grep -v default | xargs -n 1 terraform workspace select 
+      terraform workspace list | grep -v default | xargs -n 1 terraform workspace delete 
+    shell: bash

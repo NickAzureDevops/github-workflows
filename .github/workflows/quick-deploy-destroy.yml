@@ -36,14 +36,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
-        
-      - name: Destroy All Terraform Workspace 
+      - name: destroy all terraform workspace 
+        if: ${{ inputs.terraform_workspace_name == null }} 
         run: |
-            terraform workspace list 
-            # | grep -v default | xargs -I {} terraform workspace select {} && terraform destroy -auto-approve 
+          terraform workspace select "${{ github.actor }}" 
+          terraform workspace list | grep -v default | xargs -n 1 terraform workspace select 
+          terraform workspace list | grep -v default | xargs -n 1 terraform workspace delete 
         shell: bash
-        
- 
-
-
-
