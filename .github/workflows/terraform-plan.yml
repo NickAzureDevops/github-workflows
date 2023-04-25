@@ -81,13 +81,13 @@ jobs:
       - name: Create Workspace tfvars
         run: |
           cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
-          
-      - name: ls
-        run: terraform workspace list
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" --backend-config="workspace_key_prefix=${{ env.WORKSPACE }}"
+
+      - name: ls
+        run: terraform workspace list
       
       - name: Terraform Plan
         id: plan
