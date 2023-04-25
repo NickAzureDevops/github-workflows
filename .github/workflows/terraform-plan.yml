@@ -77,9 +77,10 @@ jobs:
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
+          
       - name: Create Workspace tfvars
         run: |
-          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
+          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars       
 
       - name: Terraform Init
         id: init
