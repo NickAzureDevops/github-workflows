@@ -22,8 +22,7 @@ permissions:
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
   tfbucketname: tfstate-nick1   
-  TF_KEY: terraform.tfvars
-  TF_VARS: ../etc/terraform${{ env.WORKSPACE }}.tfvars    
+  tf_key: terraform-dev          
 
 jobs:
   quick_deploy_destroy:
@@ -44,3 +43,5 @@ jobs:
         with:
           terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
           terraform_version: 1.3.7
+        env:
+          terraform_actions_working_dir: ../etc/terraform${{ env.WORKSPACE }}.tfvars   
