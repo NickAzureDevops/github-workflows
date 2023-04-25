@@ -20,10 +20,10 @@ permissions:
   contents: read
 
 env: 
-  terraform_actions_working_dir: ../etc/terraform${{ env.WORKSPACE }}.tfvars  
+  terraform_actions_working_dir: ${{ github.workspace }}/terraform/
   tfbucketname: tfstate-nick1   
   TF_KEY: terraform.tfvars
-  TF_VARS: ../etc/terraform.tfvars
+  TF_VARS: ../etc/terraform${{ env.WORKSPACE }}.tfvars    
 
 jobs:
   quick_deploy_destroy:
