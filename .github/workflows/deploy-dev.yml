@@ -23,6 +23,7 @@ on:
         required: false
         default: false
         type: boolean
+      
 
 jobs:
 
@@ -51,9 +52,6 @@ jobs:
       tf_key: terraform-dev            
       tf_vars_file: ../etc/terraform.tfvars
       environment: dev
-    secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
 
   int_plan:
     needs: DeployDev
@@ -65,6 +63,7 @@ jobs:
       tfbucketname : tfstate-nick1           
       tf_key: terraform-int           
       tf_vars_file: ../etc/terraform.tfvars
+      terraform_workspace_name: 
       environment: int_deploy
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            

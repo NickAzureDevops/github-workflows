@@ -30,7 +30,7 @@ on:
         type: string
       terraform_workspace_name:
         description: 'Specifies the Terraform workspace name.'
-        required: true
+        required: false
         type: string
     secrets:
       AWS_ACCESS_KEY_ID:
