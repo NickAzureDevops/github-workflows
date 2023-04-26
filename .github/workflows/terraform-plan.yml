@@ -55,7 +55,7 @@ jobs:
     env:
       tfbucketname: ${{ inputs.tfbucketname }}
       TF_KEY: ${{ inputs.tf_key }}.tfstate
-      TF_VARS: ${{ inputs.tf_vars_file }}
+      # TF_VARS: ${{ inputs.tf_vars_file }}
   
     steps:
       - name: Checkout
