@@ -87,7 +87,7 @@ jobs:
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
 
       - name: ls
-        run: terraform workspace list
+        run: pwd && ls -la
       
       - name: Terraform Plan
         id: plan
