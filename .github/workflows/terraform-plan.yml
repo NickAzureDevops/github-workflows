@@ -95,10 +95,7 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-      
-      - name: ls
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_VARS" --var-file=../etc/terraform${{ env.WORKSPACE }}.tfvars
-          
+
       - name: ls
         run: terraform workspace list
              
