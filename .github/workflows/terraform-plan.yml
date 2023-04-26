@@ -97,7 +97,7 @@ jobs:
         run: exit 1
       
       - name: ls
-        run: terraform workspace list
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_VARS" --var-file=../etc/terraform${{ env.WORKSPACE }}.tfvars
             
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/main'
