@@ -95,7 +95,7 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-
+      
       - name: ls
         run: terraform workspace list
             
