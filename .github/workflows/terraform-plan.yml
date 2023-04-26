@@ -74,7 +74,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config=key=$TF_KEY --var-file=../etc/terraform${{ env.WORKSPACE}}.tfvars"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" --var-file="../etc/terraform${{ env.WORKSPACE}}.tfvars"
 
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
