@@ -19,7 +19,6 @@ permissions:
 
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
-  tf_workspace: ../etc/terraform${{ env.WORKSPACE }}.tfvars 
 
 jobs:
   Plan_Dev:
