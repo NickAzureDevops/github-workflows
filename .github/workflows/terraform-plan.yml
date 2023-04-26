@@ -70,8 +70,12 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
         with:
-          terraform_version: ${{ inputs.tf_version }}
+          terraform_version: ${{ inputs.tf_version }}   
 
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
+      
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
         with:
@@ -80,19 +84,13 @@ jobs:
           
       - name: Create Workspace tfvars
         run: |
-          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
+          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars   
 
-      - name: list
-        run: pwd 
-
-      - name: Terraform Init
-        id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
-      
       - name: Terraform Plan
         id: plan
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true
+        
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -100,7 +98,7 @@ jobs:
 
       - name: ls
         run: terraform workspace list
-      
+            
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/main'
         run: terraform apply plan.tfplan
