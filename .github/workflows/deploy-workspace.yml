@@ -30,7 +30,7 @@ jobs:
       tfbucketname : tfstate-nick1       
       tf_key: terraform-dev          
       environment: dev
-      tf_vars_file: ../etc/terraform/.tfvars
+      tf_vars_file: ../etc/terraform.tfvars
     secrets: 
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
