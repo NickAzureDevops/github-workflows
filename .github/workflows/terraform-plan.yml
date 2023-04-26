@@ -84,7 +84,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" --backend-config="workspace_key_prefix=${{ env.WORKSPACE }}"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
 
       - name: ls
         run: terraform workspace list
