@@ -24,10 +24,10 @@ on:
         required: true
         type: string
         default: null
-      # tf_vars_file:
-      #   description: 'Specifies the Terraform tfvars.'
-      #   required: true
-      #   type: string
+      tf_vars_file:
+        description: 'Specifies the Terraform tfvars.'
+        required: true
+        type: string
       terraform_workspace_name:
         description: 'Specifies the Terraform workspace name.'
         required: false
@@ -42,6 +42,7 @@ on:
 
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
+  
 
 jobs:
   build-plan:
@@ -74,7 +75,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" --var-file="../etc/terraform.tfvars"
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY"
 
       - name: Terraform Plan
         id: plan
