@@ -1,4 +1,4 @@
-name: "workspace Deploy"
+name: "workspace deploy"
 
 on:
   push:
