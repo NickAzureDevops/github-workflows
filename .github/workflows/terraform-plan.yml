@@ -24,10 +24,6 @@ on:
         required: true
         type: string
         default: null
-      tf_vars_file:
-        description: 'Specifies the Terraform tfvars.'
-        required: true
-        type: string
       terraform_workspace_name:
         description: 'Specifies the Terraform workspace name.'
         required: false
