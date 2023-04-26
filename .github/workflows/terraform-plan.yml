@@ -82,9 +82,8 @@ jobs:
         run: |
           cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
 
-
       - name: list
-        run: pwd && ls -la
+        run: pwd 
 
       - name: Terraform Init
         id: init

@@ -19,6 +19,7 @@ permissions:
 
 env: 
   terraform_actions_working_dir: ${{ github.workspace }}/terraform/
+  tf_workspace: ../etc/terraform${{ env.WORKSPACE }}.tfvars 
 
 jobs:
   Plan_Dev:
@@ -29,9 +30,9 @@ jobs:
       tf_version: latest
       tfbucketname : tfstate-nick1       
       tf_key: terraform-dev          
-      tf_vars_file: ../etc/terraform${{ inputs.terraform_workspace_name }}.tfvars
+      tf_vars_file: ${{ env.workspace }}
       environment: dev
     secrets: 
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}            
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
 
