@@ -75,12 +75,7 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
-      
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
-        continue-on-error: true
-    
+
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
         with:
@@ -89,8 +84,14 @@ jobs:
           
       - name: Create Workspace tfvars
         run: |
-          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars           
-
+          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
+    
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
+        continue-on-error: true
+           
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
