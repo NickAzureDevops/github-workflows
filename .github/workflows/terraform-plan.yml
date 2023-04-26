@@ -24,10 +24,10 @@ on:
         required: true
         type: string
         default: null
-      tf_vars_file:
-        description: 'Specifies the Terraform tfvars.'
-        required: true
-        type: string
+      # tf_vars_file:
+      #   description: 'Specifies the Terraform tfvars.'
+      #   required: true
+      #   type: string
       terraform_workspace_name:
         description: 'Specifies the Terraform workspace name.'
         required: false
@@ -74,7 +74,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config="key=$TF_KEY" 
+        run: terraform init -backend-config="bucket=${{ env.tfbucketname }}" --backend-config=key=$TF_KEY --var-file=../etc/terraform${{ env.WORKSPACE}}.tfvars"
 
       - name: TF workspace
         uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
@@ -85,8 +85,7 @@ jobs:
       - name: Create Workspace tfvars
         run: |
           cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
-    
-      
+  
       - name: Terraform Plan
         id: plan
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
