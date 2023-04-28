@@ -12,7 +12,7 @@ resource "aws_instance" "app_server" {
   ami           = "ami-04505e74c0741db8d"
   instance_type = var.instance_type
 
-  tags = local.default_tags.va
+  tags = local.default_tags
 
 }
 
