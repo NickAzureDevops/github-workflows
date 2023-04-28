@@ -27,5 +27,3 @@ resource "aws_subnet" "subnet-1" {
   tags = local.default_tags
 
 }
-
-
