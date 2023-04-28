@@ -21,7 +21,7 @@ resource "aws_vpc" "staging-vpc" {
 resource "aws_subnet" "subnet-1" {
   vpc_id            = aws_vpc.staging-vpc.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  availability_zone = "eu-west-2a"
 
 
   tags = local.default_tags
