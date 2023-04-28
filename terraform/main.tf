@@ -1,15 +1,6 @@
-resource "aws_instance" "app_server1" {
-  ami           = "ami-084e8c05825742534"
-  instance_type = var.instance_type
-
-  tags = {
-    Name = var.instance_name
-  }
-}
-
 #Create Ac2 instance
 resource "aws_instance" "app_server" {
-  ami           = "ami-04505e74c0741db8d"
+  ami           = "ami-084e8c05825742534"
   instance_type = var.instance_type
 
   tags = local.default_tags
