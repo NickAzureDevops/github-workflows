@@ -8,10 +8,10 @@ terraform {
   }
 
   backend "s3" {
+    region = "eu-west-2"
   }
 }
 
 provider "aws" {
-  profile = "default"
-  region  = "eu-west-2a"
+  region = "eu-west-2a"
 }
