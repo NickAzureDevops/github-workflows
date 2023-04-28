@@ -82,29 +82,20 @@ jobs:
         run: terraform plan --var-file=$TF_VARS --out=plan.tfplan  
         continue-on-error: true
 
-      - name: TF workspace
-        uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
-        with:
-          terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
-          terraform_version: 1.3.7
+      # - name: TF workspace
+      #   uses: NickAzureDevops/github-workflows/.github/actions/terraform-workspace@main
+      #   with:
+      #     terraform_workspace_name: ${{ inputs.terraform_workspace_name }}
+      #     terraform_version: 1.3.7
           
-      - name: Create Workspace tfvars
-        run: |
-          cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
+      # - name: Create Workspace tfvars
+      #   run: |
+      #     cp ../etc/terraform.tfvars ../etc/terraform${{ env.WORKSPACE }}.tfvars      
            
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: ls
-        run: terraform workspace list
+      # - name: ls
+      #   run: terraform workspace list
              
-      - name: Terraform Apply
-        # if: github.ref == 'refs/heads/main'
-        run: terraform apply plan.tfplan
-      
-      - name: Download TF Plan
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ inputs.tf_key }}
-          path: "${{ inputs.path }}/plan.tfplan"
