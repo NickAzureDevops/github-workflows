@@ -1,16 +1,13 @@
 name: "synk-iac-security"
 
 on:
-  push:
-    branches:
-      - main 
   workflow_call:
     inputs:
       working_directory:
         description: 'The directory to run the Snyk command in'
         required: true
         type: string
-        default: components/ modules/
+        default: components/ modules/ bootstrap/
       severity: 
         type: string
         description: 'The severity of the vulnerability to report'

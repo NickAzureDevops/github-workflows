@@ -1,0 +1,37 @@
+name: "synk-iac-security2"
+
+on:
+  push:
+    branches:
+      - master 
+  workflow_call:
+    inputs:
+      working_directory:
+        description: 'The directory to run the Snyk command in'
+        required: true
+        type: string
+        default: components/ modules/
+      severity: 
+        type: string
+        description: 'The severity of the vulnerability to report'
+        required: true
+        default: --severity-threshold=critical --severity-threshold=high --severity-threshold=medium
+    secrets:
+      SNYK_TOKEN:
+        required: true
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    name: Snyk Scan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: install synk cli 
+        run: |
+          curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+          sudo apt-get install -y nodejs
+          sudo npm install -g snyk
+      - name: Run Snyk test
+        run: snyk infra test ${{ github.event.inputs.working_directory }} ${{ github.event.inputs.severity }} --report
+
