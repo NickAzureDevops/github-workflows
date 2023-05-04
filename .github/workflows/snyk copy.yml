@@ -27,12 +27,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
       - name: install synk cli 
         run: |
           curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
           sudo apt-get install -y nodejs
           sudo npm install -g snyk
+      
       - name: Authenticate Snyk
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
       - name: Run Snyk test
         run: snyk infra test ${{ github.event.inputs.working_directory }} ${{ github.event.inputs.severity }} --report
